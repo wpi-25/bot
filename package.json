@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/wpi-25/bot/issues"
   },
-  "homepage": "https://github.com/wpi-25/bot#readme"
+  "homepage": "https://github.com/wpi-25/bot#readme",
+  "dependencies": {
+    "discord.js": "^12.5.1"
+  }
 }
