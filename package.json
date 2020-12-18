@@ -1,0 +1,19 @@
+{
+  "name": "2025-bot",
+  "version": "1.0.0",
+  "description": "WPI Class of 2025 Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wpi-25/bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wpi-25/bot/issues"
+  },
+  "homepage": "https://github.com/wpi-25/bot#readme"
+}
