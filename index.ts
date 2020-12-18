@@ -11,7 +11,9 @@ import { readdirSync } from "fs";
 import { getCommand } from './util/commands';
 import { Command, ReactionCommand, TriggeredCommand } from "./Types";
 import { hasPermission } from "./Permissions";
-import * as config from './config.json';
+import * as bot_config from './config.json';
+
+export const config = bot_config;
 
 export const client = new Client();
 
