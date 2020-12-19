@@ -16,8 +16,8 @@ module.exports = <Command> {
                         .setColor("#AC2B37")
                         .setTitle(command.name)
                         .setDescription(command.description)
-                        .addField("Aliases", command.aliases)
-                        .addField("Required Permissions", command.requiredPerms)
+                        .addField("Aliases", `${command.aliases ? command.aliases : 'None'}`)
+                        .addField("Required Permissions", `${command.requiredPerms == 'public' ? 'None' : 'Restricted'}`)
                     message.channel.send(embed)
                 }
             })
