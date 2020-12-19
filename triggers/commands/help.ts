@@ -6,8 +6,23 @@ import { hasPermission } from "../../Permissions";
 module.exports = <Command> {
     name: 'help',
     description: 'Send Help Message',
-    async execute(message) {
-
+    minArgs: 0,
+    async execute(message, args) {
+        
+        if (args.length > 0) {
+            commands.forEach(command => {
+                if (command.name == args[0]) {
+                    const embed = new MessageEmbed()
+                        .setColor("#AC2B37")
+                        .setTitle(command.name)
+                        .setDescription(command.description)
+                        .addField("Aliases", command.aliases)
+                        .addField("Required Permissions", command.requiredPerms)
+                    message.channel.send(embed)
+                }
+            })
+        } else {
+        
         let embedFields = new Array<EmbedFieldData>();
         commands.forEach(command => {
             if (hasPermission(message, command)) {
@@ -31,5 +46,6 @@ module.exports = <Command> {
             .addFields(embedFields);
         
         message.channel.send(helpEmbed);
+        }
     }
 }
