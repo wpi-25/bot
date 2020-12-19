@@ -4,5 +4,8 @@
     "memberCountGuild": {
         "guild": "guild_id",
         "channel": "channel_id"
-    }
+    },
+    "runtimeFlags": [
+        "DISABLE_TRIGGERS"
+    ]
 }

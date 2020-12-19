@@ -50,15 +50,19 @@ for (const file of commandFiles) {
 console.log('Imported commands\n');
 
 export const triggers = new Collection<string, TriggeredCommand>();
-const triggerFiles = readdirSync('./triggers/triggers').filter(file=>file.endsWith('.ts') || file.endsWith('.js'));
-for (const file of triggerFiles) {
-    let name = file.slice(0, -3);
-    console.log(`Importing trigger ${file}`);
-    const trigger:TriggeredCommand = require(`./triggers/triggers/${file}`);
-    triggers.set(name, trigger);
-    console.log(`Imported trigger ${name}`);
+if (!config.runtimeFlags || !config.runtimeFlags.includes('DISABLE_TRIGGERS')) {
+    const triggerFiles = readdirSync('./triggers/triggers').filter(file=>file.endsWith('.ts') || file.endsWith('.js'));
+    for (const file of triggerFiles) {
+        let name = file.slice(0, -3);
+        console.log(`Importing trigger ${file}`);
+        const trigger:TriggeredCommand = require(`./triggers/triggers/${file}`);
+        triggers.set(name, trigger);
+        console.log(`Imported trigger ${name}`);
+    }
+    console.log('Imported triggers\n');
+} else {
+    console.log('=== TRIGGERS DISABLED ===\n');
 }
-console.log('Imported triggers\n');
 
 export const reactions = new Collection<string, ReactionCommand>();
 const reactionFiles = readdirSync('./triggers/reactions').filter(file=>file.endsWith('.ts') || file.endsWith('.js'));
