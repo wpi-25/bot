@@ -13,6 +13,10 @@ module.exports = <Command> {
         
         if (args.length > 0) {
             let command = getCommand(args[0]);
+            if (!command) {
+                message.channel.send("No matching commands found!")
+                return;
+            }
             const embed = new MessageEmbed()
                 .setColor("#AC2B37")
                 .setTitle(command.name)
