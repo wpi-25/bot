@@ -37,7 +37,6 @@ export const shutdown = (really?:boolean) => {
 
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
-process.on('SIGKILL', shutdown);
 
 // Import trigger modules
 export const commands = new Collection<string, Command>();
@@ -103,7 +102,7 @@ const message = async (message:Message) => {
                 caughtError = true;
             }
             if (!caughtError && hasPermission(message, command)) {
-                command.execute(message, args, client);
+                await command.execute(message, args, client);
             } else if (!caughtError) {
                 message.reply('You can\'t do that!');
             }

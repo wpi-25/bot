@@ -6,7 +6,7 @@ import { hasPermission } from "../../Permissions";
 module.exports = <Command> {
     name: 'help',
     description: 'Send Help Message',
-    execute: (message) => {
+    async execute(message) {
 
         let embedFields = new Array<EmbedFieldData>();
         commands.forEach(command => {

@@ -24,7 +24,7 @@ export type Command = {
      */
     minArgs?: number,
     /** The code to run when triggered */
-    execute(message:Message, args:Array<string>, client:Client): void
+    execute(message:Message, args:Array<string>, client:Client):Promise<void>
 }
 
 /** A command that is triggered by a keyword within the message or something else */

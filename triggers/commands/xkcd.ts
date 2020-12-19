@@ -1,4 +1,4 @@
-import { EmbedFieldData, MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedFieldData, MessageEmbed } from 'discord.js';
 import { Command } from '../../Types';
 
 import fetch from 'node-fetch';
@@ -7,7 +7,7 @@ import fetch from 'node-fetch';
 module.exports = <Command>{
     name: 'xkcd',
     description: 'Gets an XKCD comic',
-    args: '[xkcd comic number]',
+    args: '[xkcd comic number or \'rand\']',
     minArgs: 0,
     guildOnly: false,
     requiredPerms: 'public',
@@ -15,13 +15,21 @@ module.exports = <Command>{
 
         let url = "https://xkcd.com/"
 
-        if (args.length != 1 || isNaN(parseInt(args[0]))) {
+        if (args.length != 1) {
             url += "info.0.json"
+        } else if (isNaN(parseInt(args[0])) && args[0].includes('rand')) {
+            let maxnum:number = (await(await(fetch(`${url}info.0.json`))).json()).num;
+            let num = Math.floor(Math.random() * maxnum) + 1;
+            url += `${num}/info.0.json`;
         } else {
             url += `${args[0]}/info.0.json`
         }
         
-        let response = await(await fetch(url)).json();
+        let serverResponse = await fetch(url);
+        if (!serverResponse.ok) {
+            throw 'Comic not found!';
+        }
+        let response = await serverResponse.json();
 
         let embedFields = new Array<EmbedFieldData>();
 
