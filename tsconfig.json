@@ -4,7 +4,7 @@
         "module": "CommonJS",
         "resolveJsonModule": true,
         "target": "es2017",
-        "watch": true,
-        "lib": ["es2019", "es2020"]
+        "lib": ["es2019", "es2020"],
+        "outDir": "dist"
     }
 }

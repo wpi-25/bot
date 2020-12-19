@@ -17,7 +17,7 @@ module.exports = <Command>{
         let myMessage = await message.reply({
             embed: new MessageEmbed()
                 .setTitle(`${numberToDelete} Message${numberToDelete!=1?'s':''} Deleted`)
-                .setColor('GREEN')
+                .setColor('#4caf50')
         });
 
         setTimeout(() => {
