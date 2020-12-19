@@ -35,6 +35,10 @@ export const shutdown = (really?:boolean) => {
     process.exit(really ? 1 : 0);
 }
 
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+process.on('SIGKILL', shutdown);
+
 // Import trigger modules
 export const commands = new Collection<string, Command>();
 const commandFiles = readdirSync('./triggers/commands').filter(file=>file.endsWith('.ts')||file.endsWith('.js'));
@@ -47,7 +51,7 @@ for (const file of commandFiles) {
 console.log('Imported commands\n');
 
 export const triggers = new Collection<string, TriggeredCommand>();
-const triggerFiles = readdirSync('./triggers/triggers').filter(file=>file.endsWith('.ts')||file.endsWith('.js'));
+const triggerFiles = readdirSync('./triggers/triggers').filter(file=>file.endsWith('.ts') || file.endsWith('.js'));
 for (const file of triggerFiles) {
     let name = file.slice(0, -3);
     console.log(`Importing trigger ${file}`);
@@ -58,7 +62,7 @@ for (const file of triggerFiles) {
 console.log('Imported triggers\n');
 
 export const reactions = new Collection<string, ReactionCommand>();
-const reactionFiles = readdirSync('./triggers/reactions').filter(file=>file.endsWith('.ts')||file.endsWith('.js'));
+const reactionFiles = readdirSync('./triggers/reactions').filter(file=>file.endsWith('.ts') || file.endsWith('.js'));
 for (const file of reactionFiles) {
     let name = file.slice(0, -3);
     console.log(`Importing reaction command ${file}`);
