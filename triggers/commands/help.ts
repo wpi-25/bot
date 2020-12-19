@@ -2,6 +2,8 @@ import { MessageEmbed, EmbedFieldData } from "discord.js";
 import { Command } from "../../Types";
 import { commands, config } from "../..";
 import { hasPermission } from "../../Permissions";
+import { getCommand } from "../../util/commands";
+
 
 module.exports = <Command> {
     name: 'help',
@@ -10,17 +12,15 @@ module.exports = <Command> {
     async execute(message, args) {
         
         if (args.length > 0) {
-            commands.forEach(command => {
-                if (command.name == args[0]) {
-                    const embed = new MessageEmbed()
-                        .setColor("#AC2B37")
-                        .setTitle(command.name)
-                        .setDescription(command.description)
-                        .addField("Aliases", `${command.aliases ? command.aliases : 'None'}`)
-                        .addField("Required Permissions", `${command.requiredPerms == 'public' ? 'None' : 'Restricted'}`)
-                    message.channel.send(embed)
-                }
-            })
+            let command = getCommand(args[0]);
+            const embed = new MessageEmbed()
+                .setColor("#AC2B37")
+                .setTitle(command.name)
+                .setDescription(command.description)
+                .addField("Aliases", `${command.aliases ? command.aliases : 'None'}`)
+                .addField("Required Permissions", `${command.requiredPerms == 'public' ? 'None' : 'Restricted'}`)
+            message.channel.send(embed)
+                
         } else {
         
         let embedFields = new Array<EmbedFieldData>();
