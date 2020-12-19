@@ -2,7 +2,8 @@ import { User, Message, GuildMember, Snowflake} from "discord.js"
 import { Command, TypedSnowflake } from "./Types"
 
 let admins = <Array<TypedSnowflake>>[
-    "261908587943690242"    // Sam for now
+    "261908587943690242",    // Sam for now
+    "118455061222260736"     // Muirrum
 ];
 
 export const hasPermission = (message:Message, command:Command) => {
