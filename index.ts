@@ -89,8 +89,10 @@ const message = async (message:Message) => {
             let caughtError = false;
             if (!command) throw `Command ${trigger}`;
             if (command.args && !args.length) {
-                message.reply(`You need to provide arguments for this command!\nUsage: \`${config.prefix}${trigger} ${command.args}\``);
-                caughtError = true;
+                if (args.length < command.minArgs) {
+                    message.reply(`You need to provide more arguments for this command!\nUsage: \`${config.prefix}${trigger} ${command.args}\``)
+                    caughtError = true;
+                }
             }
             if (command.guildOnly && !message.guild) {
                 message.reply(`You must use this command within a guild!`);

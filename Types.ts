@@ -18,6 +18,11 @@ export type Command = {
     requiredPerms?: 'public' | 'admin' | 'whitelist',
     /** Whitelist */
     whitelist?: Array<TypedSnowflake>,
+
+    /**
+     * The minimum number of args needed for the command
+     */
+    minArgs?: number,
     /** The code to run when triggered */
     execute(message:Message, args:Array<string>, client:Client): void
 }
