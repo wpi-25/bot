@@ -24,5 +24,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: cp config.json.example config.json
     - run: npm ci
     - run: npm run build
