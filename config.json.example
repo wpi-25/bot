@@ -1,4 +1,8 @@
 {
     "prefix": "//",
-    "token": "bad_token"
+    "token": "bad_token",
+    "memberCountGuild": {
+        "guild": "guild_id",
+        "channel": "channel_id"
+    }
 }

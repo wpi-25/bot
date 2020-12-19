@@ -25,9 +25,9 @@ module.exports = <Command> {
         });
         
         const helpEmbed = new MessageEmbed()
-            .setColor('#2196f3')
-            .setTitle('🅱️ing🅱️ot Help')
-            .setDescription(`Honestly, I don't even know anymore\n\nTrigger: ${config.prefix}\nCommands for ${message.author}`)
+            .setColor('#AC2B37')
+            .setTitle('Co25 Bot Help')
+            .setDescription(`Honestly, I don't even know\n\nTrigger: ${config.prefix}\nCommands for ${message.author}`)
             .addFields(embedFields);
         
         message.channel.send(helpEmbed);

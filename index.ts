@@ -1,11 +1,14 @@
 import {
     Client,
     Collection,
+    GuildMember,
     Message,
     MessageEmbed,
     MessageReaction,
+    PartialGuildMember,
     PartialUser,
-    User
+    User,
+    VoiceChannel
 } from "discord.js";
 import * as readline from 'readline';
 import { readdirSync } from "fs";
@@ -29,7 +32,7 @@ export const shutdown = (really?:boolean) => {
     rl.close();
     if (really) console.log(' ===== Shutting down =====\n');
     else console.log(' ===== Restarting =====\n');
-    process.exit(really? 1 : 0);
+    process.exit(really ? 1 : 0);
 }
 
 // Import trigger modules
@@ -67,6 +70,8 @@ console.log('Imported reaction commands\n');
 
 client.on('ready', ()=>{
     console.log(`Logged in as ${client.user.tag}`);
+    client.user.setPresence({activity:{'type':'WATCHING',name:'🐐'}});
+    updateMembers();
 });
 
 const message = async (message:Message) => {
@@ -140,7 +145,7 @@ const message = async (message:Message) => {
 }
 
 const react = async (reaction:MessageReaction, user:User|PartialUser) => {
-    console.log(`${user.tag} reacted with ${reaction.emoji.name}`);
+    console.log(`${user.tag} reacted with ${reaction.emoji.name} in #${reaction.message.channel.id}`);
     reactions.forEach(command => {
         let evaluatorOutput = undefined;
         switch (typeof command.trigger) {
@@ -177,5 +182,17 @@ const react = async (reaction:MessageReaction, user:User|PartialUser) => {
 
 client.on('message', message);
 client.on('messageReactionAdd', react);
+
+const updateMembers = (member?:GuildMember|PartialGuildMember) => {
+    if (!member || member.guild.id == config.memberCountGuild.guild) {
+        let guild = client.guilds.cache.get(config.memberCountGuild.guild);
+        // @ts-ignore
+        let channel:VoiceChannel = client.channels.cache.get(config.memberCountGuild.channel);
+        channel.setName(`${guild.memberCount} Members`);
+    }
+}
+
+client.on('guildMemberAdd', member => { console.log(`${member.displayName} joined`); updateMembers(member);});
+client.on('guildMemberRemove', member => {console.log(`${member.displayName} left`);updateMembers(member);});
 
 client.login(config.token);
