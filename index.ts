@@ -128,24 +128,32 @@ const message = async (message:Message) => {
     // Look for and run triggers
     if (!message.author.bot) {
         triggers.forEach(trigger => {
-            let evaluatorOutput = undefined;
-            switch (typeof trigger.trigger) {
-                case 'object': // RegExp
-                    evaluatorOutput = message.content.match(<RegExp>trigger.trigger);
-                    break;
-                
-                case 'string':
-                    evaluatorOutput = message.content.includes(trigger.trigger);
-                    break;
-                
-                case 'function':
-                    evaluatorOutput = trigger.trigger(message);
-                    break;
+            try {
+                let evaluatorOutput = undefined;
+                switch (typeof trigger.trigger) {
+                    case 'object': // RegExp
+                        evaluatorOutput = message.content.match(<RegExp>trigger.trigger);
+                        break;
+                    
+                    case 'string':
+                        evaluatorOutput = message.content.includes(trigger.trigger);
+                        break;
+                    
+                    case 'function':
+                        evaluatorOutput = trigger.trigger(message);
+                        break;
+                }
+                if (evaluatorOutput) {  // We got *something*... pass it on
+                    trigger.execute(message, evaluatorOutput, client);
+                }
+            } catch (e) {
+                const error = new MessageEmbed()
+                    .setColor('#f44336')
+                    .setTitle('🤬 That didn\'t work!')
+                    .setDescription(e);
+                message.reply(error);
             }
-            if (evaluatorOutput) {  // We got *something*... pass it on
-                trigger.execute(message, evaluatorOutput, client);
-            }
-        })
+        });
     }
 }
 

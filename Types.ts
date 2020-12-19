@@ -36,7 +36,7 @@ export type TriggeredCommand = {    // TODO: Create a better name for this type
     */
     trigger: String | RegExp | TriggerDeterminer,
     /** The code to run when triggered */
-    execute(message:Message, args:any, client:Client): void
+    execute(message:Message, args:any, client:Client): Promise<void>
 }
 
 export type EditCommand = {
