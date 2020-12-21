@@ -36,7 +36,7 @@ module.exports = <Command>{
 
         let choiceStart = descEnd + 1
         let choiceArg = args.slice(choiceStart);
-        console.log(choiceArg)
+        console.log(`Choice arg: ${choiceArg}`)
 
 
         
@@ -49,13 +49,15 @@ module.exports = <Command>{
             console.log(currentChoice)
             if (currentChoice.startsWith("\"")) {
                 if (currentChoice.endsWith("\"")) {
-                    choices.push(currentChoice.slice(1,-2))
+                    choices.push(currentChoice.slice(1,-1))
+                    console.log(`Added single-word choice ${currentChoice.slice(1,-1)}`)
                     continue
                 } else {
                     console.log("Found multi-word choice")
                     isMultiWordChoice = true;
                     tmpChoiceStart = i;
                     console.log(tmpChoiceStart)
+                    continue
                 }
             } else if (currentChoice.endsWith("\"")) {
                 tmpChoiceEnd = i;
@@ -67,10 +69,13 @@ module.exports = <Command>{
                     tmpChoice += `${tmpChoiceArr[k]} `
                 }
                 choices.push(tmpChoice.slice(1,-2))
-                console.log(tmpChoice)
+                console.log(`Added multi-word choice ${tmpChoice}`)
                 isMultiWordChoice = false;
+                continue
             } else {
                 choices.push(currentChoice)
+                console.log(`Added choice ${currentChoice}`)
+                continue
             }
             
         }
@@ -78,11 +83,11 @@ module.exports = <Command>{
         
         let embedFields = new Array<EmbedFieldData>();
         let reactions = new Array<string>()
-        console.log(choices)
+        console.log(`Choices: ${choices}`)
         for (var i:number = 0; i < choices.length; i++) {
             let choice = choices[i];
-           let choiceProc = choice.split(":");
-            console.log(choiceProc)
+           let choiceProc = choice.split(",");
+            console.log(`Processed choice: ${choiceProc}`)
             embedFields.push({name: `${choiceProc[0]}`, value: `​${choiceProc[1]}`, inline: true})
             reactions.push(choiceProc[1])
         }
