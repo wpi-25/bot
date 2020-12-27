@@ -14,36 +14,16 @@ module.exports = <Command> {
 
 export const updateBot = (message?:Message) => {
     if (message) message.channel.startTyping();
-    exec('git pull', async (err, stdout, stderr) => {
-        if (message) message.channel.stopTyping();
-        if (err) {
-            message.channel.send({
-                embed: new MessageEmbed()
-                    .setTitle('Node Errored')
-                    .setColor('RED')
-                    .setDescription(err)
-            });
-        }
-        if (stdout) {
-            message.channel.send({
-                embed: new MessageEmbed()
-                    .setTitle('Command Output')
-                    .setColor('GREEN')
-                    .setDescription(stdout)
-            });
-        }
-        if (stderr) {
-            message.channel.send({
-                embed: new MessageEmbed()
-                    .setTitle('Command Errored')
-                    .setColor('RED')
-                    .setDescription(stderr)
-            });
-        }
-
-        if (!err && !stderr && !stdout.includes('Already up to date.')) {
+    let process = exec('git pull', (error, stdout, stderr) => {
+        console.log({error, stdout, stderr});
+    });
+    process.on('close', async code => {
+        message.channel.stopTyping();
+        if (code == 0) {
             if (message) await message.channel.send('Restarting...');
             shutdown();
+        } else {
+            message.channel.send('Something went wrong... Please check the logs and try again');
         }
     });
 }
