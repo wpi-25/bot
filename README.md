@@ -2,4 +2,4 @@
 
 Written in node using discord.js
 
-Run using the start file for your platform (`start.bat` for Windows and `start.sh` for Linux)
+You should run using the start file for your platform (`start.bat` for Windows and `start.sh` for Linux)
