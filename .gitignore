@@ -175,3 +175,4 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/emacs,vscode,node
 
 config.json
+*.rdb

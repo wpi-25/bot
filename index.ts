@@ -13,11 +13,11 @@ import {
 import * as readline from 'readline';
 import { readdirSync } from "fs";
 import { getCommand } from './util/commands';
-import { Command, ReactionCommand, TriggeredCommand } from "./Types";
+import { Command, Config, ReactionCommand, TriggeredCommand } from "./Types";
 import { hasPermission } from "./Permissions";
 import * as bot_config from './config.json';
 
-export const config = bot_config;
+export const config:Config = bot_config;
 
 export const client = new Client();
 

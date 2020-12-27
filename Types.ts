@@ -58,3 +58,31 @@ export type ReactionCommand = {
 export type TypedSnowflake = string;
 
 export type TriggerDeterminer = (message:Message) => boolean | any;
+
+/** Leaderboard Level Data */
+export type LevelData = {
+    /** Message Count */
+    count:number;
+    /** Experience Points in Level */
+    xp:number;
+    /** Level Number */
+    level:number;
+    /** Timestamp of last message */
+    last:Date;
+}
+
+export type Config = {
+    prefix: string,
+    token: string,
+    memberCountGuild?: {
+        guild: string,
+        channel: string
+    },
+    levels?: {
+        db?: string,
+        xpRange: number[],
+        timeout: number,
+        leaderboardCooldown: number,
+        levels: number[]
+    }
+}
