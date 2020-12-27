@@ -4,5 +4,19 @@
     "memberCountGuild": {
         "guild": "guild_id",
         "channel": "channel_id"
+    },
+    "levels": {
+        "db": "redis://127.0.0.1",  // To disable levels, do not include this value
+        "xpRange": [10, 20],
+        "timeout": 60000,
+        "leaderboardCooldown": 15000,
+        "levels": [
+            0,
+            100,
+            250,
+            500,
+            1000,
+            2000
+        ]
     }
 }
