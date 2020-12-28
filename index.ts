@@ -75,6 +75,22 @@ client.on('ready', ()=>{
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setPresence({activity:{'type':'WATCHING',name:'🐐'}});
     updateMembers();
+
+    if ('vcPing' in config) {
+        const guild = client.guilds.cache.get(config.vcPing.guild);
+        const vcStates = guild.voiceStates.cache;
+        const guildMembers = guild.members.cache;
+        guildMembers.forEach((member, UID) => {
+            const state = vcStates.find((state, key) => key == UID);
+            if (state?.channelID) {  // In VC
+                console.log(`${member.displayName} is in ${guild.channels.cache.get(state.channelID).name}`);
+                member.roles.add(config.vcPing.role);
+            } else {
+                console.log(`${member.displayName} is not in a vc`);
+                member.roles.remove(config.vcPing.role);
+            }
+        });
+    }
 });
 
 const message = async (message:Message) => {
@@ -195,6 +211,26 @@ const react = async (reaction:MessageReaction, user:User|PartialUser) => {
 
 client.on('message', message);
 client.on('messageReactionAdd', react);
+if ('vcPing' in config) {
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        if (!oldState.channelID && newState.channelID) {
+            // console.log(`${newState.member.displayName} joined ${newState.guild.channels.cache.get(newState.channelID).name}`);
+            if (newState.guild.id == config.vcPing.guild) {
+                newState.member.roles.add(config.vcPing.role);
+            }
+        } else if (oldState.channelID && !newState.channelID) {
+            // console.log(`${newState.member.displayName} left ${oldState.guild.channels.cache.get(oldState.channelID).name}`);
+            if (oldState.guild.id == config.vcPing.guild) {
+                oldState.member.roles.remove(config.vcPing.role);
+            }
+        } else if (oldState?.channelID != newState?.channelID) {
+            // console.log(`${newState.member.displayName} moved from ${oldState.guild.channels.cache.get(oldState.channelID).name} to ${newState.guild.channels.cache.get(newState.channelID).name}`);
+            if (oldState.guild.id == config.vcPing.guild && newState.guild.id != config.vcPing.guild) {
+                oldState.member.roles.remove(config.vcPing.role);
+            }
+        }
+    });
+}
 
 const updateMembers = (member?:GuildMember|PartialGuildMember) => {
     if (!member || member.guild.id == config.memberCountGuild.guild) {
