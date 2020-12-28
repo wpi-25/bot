@@ -85,8 +85,5 @@ export type Config = {
         leaderboardCooldown: number,
         levels: number[]
     },
-    vcPing?: {
-        role: string,
-        guild: string
-    }
+    vcPing?: any
 }
