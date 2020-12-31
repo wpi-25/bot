@@ -84,7 +84,7 @@ export type Config = {
         timeout: number,
         leaderboardCooldown: number,
         levels: number[],
-        channels?: any
+        commandChannels?: any
     },
     vcPing?: any
 }

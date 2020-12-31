@@ -13,8 +13,8 @@ module.exports = <Command> {
     args: '[page]',
     minArgs: 0,
     async execute(message, args) {
-        if (!commandAllowed(message, config.levels?.channels)) {
-            throw `You can't use that command here!\nYou can only use it in ${getChannelList(config.levels.channels[message.guild.id])}`;
+        if (!commandAllowed(message, config.levels?.commandChannels)) {
+            throw `You can't use that command here!\nYou can only use it in ${getChannelList(config.levels.commandChannels[message.guild.id])}`;
         }
         if (!redisClient) throw 'Levels are not enabled!';
         let leaderboard = await getRankedLeaderboard();
