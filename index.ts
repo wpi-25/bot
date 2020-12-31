@@ -75,6 +75,25 @@ client.on('ready', ()=>{
     console.log(`Logged in as ${client.user.tag}`);
     client.user.setPresence({activity:{'type':'WATCHING',name:'🐐'}});
     updateMembers();
+
+    if ('vcPing' in config) {
+        client.guilds.cache.forEach((guild, gid) => {
+            if (gid in config.vcPing) {
+                const vcStates = guild.voiceStates.cache;
+                const guildMembers = guild.members.cache;
+                guildMembers.forEach((member, UID) => {
+                    const state = vcStates.find((state, key) => key == UID);
+                    if (state?.channelID) {  // In VC
+                        // console.log(`${member.displayName} is in ${guild.channels.cache.get(state.channelID).name}`);
+                        member.roles.add(config.vcPing[gid]);
+                    } else {
+                        // console.log(`${member.displayName} is not in a vc`);
+                        member.roles.remove(config.vcPing[gid]);
+                    }
+                });
+            }
+        });
+    }
 });
 
 const message = async (message:Message) => {
@@ -195,6 +214,35 @@ const react = async (reaction:MessageReaction, user:User|PartialUser) => {
 
 client.on('message', message);
 client.on('messageReactionAdd', react);
+if ('vcPing' in config) {
+    client.on('voiceStateUpdate', (oldState, newState) => {
+        if (!oldState.channelID && newState.channelID) {
+            console.log(`${newState.member.displayName} joined ${newState.guild.channels.cache.get(newState.channelID).name}`);
+            if (newState.guild.id in config.vcPing) {
+                console.log('in known guild');
+                newState.member.roles.add(
+                    config.vcPing[newState.guild.id]
+                );
+            }
+        } else if (oldState.channelID && !newState.channelID) {
+            console.log(`${newState.member.displayName} left ${oldState.guild.channels.cache.get(oldState.channelID).name}`);
+            if (oldState.guild.id in config.vcPing) {
+                console.log('in known guild');
+                oldState.member.roles.remove(
+                    config.vcPing[oldState.guild.id]
+                );
+            }
+        } else if (oldState?.channelID != newState?.channelID) {    // Users move from one channel to another but disconnect when switching guilds so this never occurs
+            console.log(`${newState.member.displayName} moved from ${oldState.guild.channels.cache.get(oldState.channelID).name} to ${newState.guild.channels.cache.get(newState.channelID).name}`);
+            if (oldState.guild.id in config.vcPing && !(newState.guild.id in config.vcPing)) {
+                console.log('in known guild');
+                oldState.member.roles.remove(
+                    config.vcPing[oldState.guild.id]
+                );
+            }
+        }
+    });
+}
 
 const updateMembers = (member?:GuildMember|PartialGuildMember) => {
     if (!member || member.guild.id == config.memberCountGuild.guild) {
