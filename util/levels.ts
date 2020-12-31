@@ -1,4 +1,4 @@
-import { Collection, Snowflake, SnowflakeUtil } from "discord.js";
+import { Collection, Snowflake } from "discord.js";
 import { createClient, RedisClient } from "redis";
 import { promisify } from "util";
 import { client, config } from "..";

@@ -2,7 +2,6 @@ import { MessageEmbed } from "discord.js";
 import { client } from "../..";
 import { Command } from "../../Types";
 import { getRankedLeaderboard, redisClient } from "../../util/levels";
-import { rand } from "../../util/math";
 import { getIDFromMention, getRandomHexColor } from "../../util/text";
 
 module.exports = <Command> {

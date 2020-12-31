@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { commands, triggers, reactions } from '../..';
+import { commands, triggers, reactions } from '../../helpers/modules';
 import { Command } from '../../Types';
 import { getCommand } from '../../util/commands';
 

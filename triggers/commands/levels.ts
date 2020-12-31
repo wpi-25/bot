@@ -1,4 +1,4 @@
-import { EmbedField, EmbedFieldData, MessageEmbed } from "discord.js";
+import { EmbedFieldData, MessageEmbed } from "discord.js";
 import { client } from "../..";
 import { Command } from "../../Types";
 import { getRankedLeaderboard, redisClient } from "../../util/levels";
