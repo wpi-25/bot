@@ -83,7 +83,8 @@ export type Config = {
         xpRange: number[],
         timeout: number,
         leaderboardCooldown: number,
-        levels: number[]
+        levels: number[],
+        channels?: any
     },
     vcPing?: any
 }

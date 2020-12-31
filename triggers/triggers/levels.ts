@@ -6,7 +6,7 @@ import { getLevelNumber, getUserLevel, redisClient, setUserLevel } from "../../u
 module.exports = <TriggeredCommand> {
     trigger: ()=>true,  // Trigger on every message
     async execute(message) {
-        if (redisClient) {  // If levels are enabled
+        if (redisClient && !message.content.startsWith(config.prefix)) {  // If levels are enabled and it's not a command
             let uid = message.author.id;
             let level = await getUserLevel(uid);
 

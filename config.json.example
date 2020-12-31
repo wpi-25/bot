@@ -17,7 +17,11 @@
             500,
             1000,
             2000
-        ]
+        ],
+        "channels": {
+            "guild1": "channel1",
+            "guild2": ["channel2", "channel3"]
+        }
     },
     "vcPing": {
         "guild1": "role1",
