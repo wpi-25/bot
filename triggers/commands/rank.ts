@@ -1,9 +1,9 @@
 import { MessageEmbed } from "discord.js";
-import { client } from "../..";
+import { client, config } from "../..";
 import { Command } from "../../Types";
+import { commandAllowed } from "../../util/commands";
 import { getRankedLeaderboard, redisClient } from "../../util/levels";
-import { rand } from "../../util/math";
-import { getIDFromMention, getRandomHexColor } from "../../util/text";
+import { getChannelList, getIDFromMention, getRandomHexColor } from "../../util/text";
 
 module.exports = <Command> {
     name: 'rank',
@@ -11,6 +11,9 @@ module.exports = <Command> {
     args: '[user]',
     minArgs: 0,
     async execute(message, args) {
+        if (!commandAllowed(message, config.levels?.commandChannels)) {
+            throw `You can't use that command here!\nYou can only use it in ${getChannelList(config.levels.commandChannels[message.guild.id])}`;
+        }
         if (!redisClient) throw 'Levels are not enabled!';
         let leaderboard = await getRankedLeaderboard();
         let member = args.length ? message.guild.members.cache.get(getIDFromMention(args[0])) : message.member;
