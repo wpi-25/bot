@@ -1,8 +1,9 @@
 import { MessageEmbed, EmbedFieldData } from "discord.js";
 import { Command } from "../../Types";
-import { commands, config } from "../..";
+import { config } from "../..";
 import { hasPermission } from "../../Permissions";
 import { getCommand, getUsage } from "../../util/commands";
+import { commands } from "../../helpers/modules";
 
 
 module.exports = <Command> {
@@ -29,29 +30,29 @@ module.exports = <Command> {
                 
         } else {
         
-        let embedFields = new Array<EmbedFieldData>();
-        commands.forEach(command => {
-            if (hasPermission(message, command)) {
-                let p = command.requiredPerms;
-                let e = '';
-                if (!p || p == 'public') {
-                    e = '🌐';
-                } else if (p == 'whitelist') {
-                    e = '👥';
-                } else {
-                    e = '🕴️';
+            let embedFields = new Array<EmbedFieldData>();
+            commands.forEach(command => {
+                if (hasPermission(message, command)) {
+                    let p = command.requiredPerms;
+                    let e = '';
+                    if (!p || p == 'public') {
+                        e = '🌐';
+                    } else if (p == 'whitelist') {
+                        e = '👥';
+                    } else {
+                        e = '🕴️';
+                    }
+                    embedFields.push({name: getUsage(command), value: `${e} ${command.description}`});
                 }
-                embedFields.push({name: getUsage(command), value: `${e} ${command.description}`});
-            }
-        });
-        
-        const helpEmbed = new MessageEmbed()
-            .setColor('#AC2B37')
-            .setTitle('Gompei25 Help')
-            .setDescription(`Honestly, I don't even know\n\nTrigger: ${config.prefix}\nCommands for ${message.author}`)
-            .addFields(embedFields);
-        
-        message.channel.send(helpEmbed);
+            });
+            
+            const helpEmbed = new MessageEmbed()
+                .setColor('#AC2B37')
+                .setTitle('Gompei25 Help')
+                .setDescription(`Honestly, I don't even know\n\nTrigger: ${config.prefix}\nCommands for ${message.author}`)
+                .addFields(embedFields);
+            
+            message.channel.send(helpEmbed);
         }
     }
 }

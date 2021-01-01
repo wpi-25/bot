@@ -1,4 +1,4 @@
-import { EmbedField, EmbedFieldData, MessageEmbed } from "discord.js";
+import { EmbedFieldData, MessageEmbed } from "discord.js";
 import { client, config } from "../..";
 import { Command } from "../../Types";
 import { commandAllowed } from "../../util/commands";

@@ -1,4 +1,4 @@
-import { shutdown } from '../..';
+import { shutdown } from '../../helpers/lifecycle';
 import { Command } from '../../Types';
 
 module.exports = <Command>{

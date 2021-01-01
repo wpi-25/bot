@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
-import { Message, MessageEmbed } from 'discord.js';
-import { shutdown } from '../..';
+import { Message } from 'discord.js';
+import { shutdown } from '../../helpers/lifecycle';
 import { Command } from '../../Types';
 
 module.exports = <Command> {
