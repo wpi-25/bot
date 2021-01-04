@@ -176,3 +176,4 @@ dist
 
 config.json
 *.rdb
+.dccache
