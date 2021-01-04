@@ -2,7 +2,7 @@ import { MessageEmbed } from "discord.js";
 import { client, config } from "../..";
 import { Command } from "../../Types";
 import { commandAllowed } from "../../util/commands";
-import { getRankedLeaderboard, redisClient } from "../../util/levels";
+import { getLevelCost, getRankedLeaderboard, redisClient } from "../../util/levels";
 import { getChannelList, getIDFromMention, getRandomHexColor } from "../../util/text";
 
 module.exports = <Command> {
@@ -43,6 +43,7 @@ module.exports = <Command> {
             .addField('Messages', data.count, true)
             .addField('XP', data.xp, true)
             .addField('Level', data.level, true)
+            .setDescription(`${getLevelCost(data.level + 1) - data.xp}XP to next level`)
             .setTimestamp(leaderboard.cacheDate);
         message.channel.send(embed);
     }

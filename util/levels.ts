@@ -28,9 +28,11 @@ export async function getUserLevel(uid:Snowflake):Promise<LevelData> {
 }
 
 export function getLevelNumber(xp:number) {
-    let level = config.levels.levels.findIndex(v => v >= xp);
-    level = level <= 0 ? 0 : level - 1;
-    return level;
+    return Math.max(Math.floor(Math.log2(xp / 10)), 0);
+}
+
+export function getLevelCost(level:number) {
+    return Math.round(10 * Math.pow(2, level));
 }
 
 export function setUserLevel(uid:Snowflake, {count, xp, last}:LevelData) {

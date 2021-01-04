@@ -1,4 +1,4 @@
-import { Message, Client, Emoji, User, MessageReaction, PartialUser } from "discord.js";
+import { Message, Client, Emoji, User, MessageReaction, PartialUser, Snowflake } from "discord.js";
 
 /** A command that is triggered by the prefix followed by the name.  
  *  Can be locked down to certain users or admins
@@ -83,7 +83,6 @@ export type Config = {
         xpRange: number[],
         timeout: number,
         leaderboardCooldown: number,
-        levels: number[],
         commandChannels?: any
     },
     vcPing?: any
