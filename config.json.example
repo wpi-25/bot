@@ -26,5 +26,12 @@
     "vcPing": {
         "guild1": "role1",
         "guild2": "role2"
+    },
+    "activePing": {
+        "timeout": 900000,
+        "roles": {
+            "guild1": "role1",
+            "guild2": "role2"
+        }
     }
 }

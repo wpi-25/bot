@@ -27,6 +27,28 @@ export async function getUserLevel(uid:Snowflake):Promise<LevelData> {
     return data;
 }
 
+/**
+ * Query the databse for the time of a user's last message
+ * @param uid the ID of the user to query for
+ * @param failover the value to return if database misses, `Date(0)` if not specified
+ */
+export async function getLastUserMessageTimestamp(uid:Snowflake, failover = new Date(0)) {
+    if (!redisClient) return failover;
+    let lastTimestamp = await get(`${uid}:last`);
+    return lastTimestamp ? new Date(parseInt(lastTimestamp)) : failover;
+}
+
+/**
+ * Query the databse for the time of a user's last reaction
+ * @param uid the ID of the user to query for
+ * @param failover the value to return if database misses, `Date(0)` if not specified
+ */
+export async function getLastUserReactionTimestamp(uid:Snowflake, failover = new Date(0)) {
+    if (!redisClient) return failover;
+    let lastTimestamp = await get(`${uid}:react`);
+    return lastTimestamp ? new Date(parseInt(lastTimestamp)) : failover;
+}
+
 export function getLevelNumber(xp:number) {
     return Math.max(Math.floor(Math.log2(xp / 10)), 0);
 }

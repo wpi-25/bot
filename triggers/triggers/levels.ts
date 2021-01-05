@@ -1,6 +1,6 @@
 import { TriggeredCommand } from "../../Types";
 import { config } from "../..";
-import { rand } from "../../util/math";
+import { rand } from "../../util/general";
 import { getLevelNumber, getUserLevel, redisClient, setUserLevel } from "../../util/levels";
 
 module.exports = <TriggeredCommand> {

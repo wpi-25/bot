@@ -1,7 +1,5 @@
 import { Snowflake } from "discord.js";
-import { type } from "os";
-import { client } from "..";
-import { rand } from "./math";
+import { rand } from "./general";
 
 export const getTextAfter = (fragment:string, main:string) => main.substr(main.indexOf(fragment) + fragment.length);
 

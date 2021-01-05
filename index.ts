@@ -12,6 +12,7 @@ import { readyMembers, setupMemberListeners } from "./helpers/members";
 import { readyVC, setupVCListeners } from "./helpers/vc";
 import { setupMessageListeners } from "./helpers/messageHandler";
 import { setupReactionListeners } from "./helpers/reactionHandler";
+import { readyActive, setupActiveListeners } from "./helpers/active";
 
 client.on('ready', ()=>{
     console.log(`Logged in as ${client.user.tag}`);
@@ -19,6 +20,7 @@ client.on('ready', ()=>{
 
     readyMembers();
     readyVC();
+    readyActive();
 });
 
 setupMessageListeners();
@@ -26,5 +28,6 @@ setupReactionListeners();
 
 setupVCListeners();
 setupMemberListeners();
+setupActiveListeners();
 
 client.login(config.token);
