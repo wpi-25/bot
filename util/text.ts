@@ -1,3 +1,8 @@
+import { Snowflake } from "discord.js";
+import { type } from "os";
+import { client } from "..";
+import { rand } from "./math";
+
 export const getTextAfter = (fragment:string, main:string) => main.substr(main.indexOf(fragment) + fragment.length);
 
 export const getIDFromMention = (mention:string) => {
@@ -6,7 +11,7 @@ export const getIDFromMention = (mention:string) => {
         if (mention.startsWith('!')) {
             mention = mention.slice(1);
         }
-    } else {
+    } else if (!mention.match(/[0-9]+/)) {
         throw 'incorrectly formatted mention';
     }
     
@@ -21,4 +26,20 @@ export const getIDFromTag = (mention:string) => {
     }
     
     return mention;
+}
+
+export function getRandomHexColor() {
+    return `#${rand([0, 0xffffff]).toString(16)}`;
+}
+
+export function getChannelList(list:string|Array<Snowflake>) {
+    return list ? typeof list == 'string' ? `<#${list}>` : getChannelListFromArray(list) : 'anywhere';
+}
+
+export function getChannelListFromArray(list:Array<Snowflake>) {
+    let out = '';
+    list.forEach((id, i) => {
+        out += `<#${id}>${i != list.length - 1 ? ', ' : ''}`;
+    });
+    return out;
 }

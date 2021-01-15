@@ -1,4 +1,4 @@
-import { Message, Client, Emoji, User, MessageReaction, PartialUser } from "discord.js";
+import { Message, Client, Emoji, User, MessageReaction, PartialUser, Snowflake } from "discord.js";
 
 /** A command that is triggered by the prefix followed by the name.  
  *  Can be locked down to certain users or admins
@@ -58,3 +58,32 @@ export type ReactionCommand = {
 export type TypedSnowflake = string;
 
 export type TriggerDeterminer = (message:Message) => boolean | any;
+
+/** Leaderboard Level Data */
+export type LevelData = {
+    /** Message Count */
+    count:number;
+    /** Experience Points in Level */
+    xp:number;
+    /** Level Number */
+    level:number;
+    /** Timestamp of last message */
+    last:Date;
+}
+
+export type Config = {
+    prefix: string,
+    token: string,
+    memberCountGuild?: {
+        guild: string,
+        channel: string
+    },
+    levels?: {
+        db?: string,
+        xpRange: number[],
+        timeout: number,
+        leaderboardCooldown: number,
+        commandChannels?: any
+    },
+    vcPing?: any
+}
