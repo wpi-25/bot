@@ -27,7 +27,7 @@ module.exports = <TriggeredCommand> {
                     role.name.startsWith('Level') &&
                     getLevelNumberFromRole(role) <= newLevel)
                     .sort((a:Role, b:Role) => getLevelNumberFromRole(a) - getLevelNumberFromRole(b))
-                    .last(); // Need to sort first
+                    .last();
                 
                 member.roles.cache.forEach(role =>
                     (newRole.name.startsWith('Level') && role.id != newRole.id) ?
