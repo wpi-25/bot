@@ -1,6 +1,6 @@
 import { Collection, GuildMember, RoleResolvable, Snowflake } from "discord.js";
 import { config, client } from "..";
-import { getLastUserMessageTimestamp, getLastUserReactionTimestamp, set } from "../util/levels";
+import { get, getLastUserMessageTimestamp, getLastUserReactionTimestamp, getUserEnabled, set } from "../util/levels";
 
 export const activeConfig = config.activePing;
 const memberActiveTimeouts = new Collection<Snowflake, NodeJS.Timeout>();
@@ -40,18 +40,28 @@ export function shouldHaveRole(member:GuildMember, role:RoleResolvable, shouldHa
     let r = typeof role == 'object' ? role : member.guild.roles.cache.get(role);
     if (shouldHaveRole) {
         if (!member.roles.cache.has(r.id)) {
-            console.log(`Gave ${member.displayName} @${r.name}`);
-            member.roles.add(role);
+            console.log(`Attempting to give ${member.displayName} @${r.name}`);
+            member.roles.add(role).then(()=>{
+                console.log(`Gave ${member.displayName} @${r.name}`);
+            }).catch((e)=>{
+                console.warn(`Could not give ${member.displayName} @${r.name}!`, e);
+            });
         }
     } else {
         if (member.roles.cache.has(r.id)) {
-            console.log(`Removed @${r.name} from ${member.displayName}`);
-            member.roles.remove(role);
+            console.log(`Attempting to remove @${r.name} from ${member.displayName}`);
+            member.roles.remove(role).then(()=>{
+                console.log(`Removed @${r.name} from ${member.displayName}`);
+            }).catch((e)=>{
+                console.warn(`Could not remove ${member.displayName} from @${r.name}!`, e);
+            });
         }
     }
 }
 
 async function isMemberActive(member:GuildMember) {
+    if (!await getUserEnabled(member)) return false;
+
     let online = member.presence.status == 'online';    // If their status is online
     let lastMessageTimeDifference = new Date().getTime() -  (await getLastUserMessageTimestamp(member.id)).getTime();   // How long ago their last message was sent
     let lastReactionTimeDifference = new Date().getTime() - (await getLastUserReactionTimestamp(member.id)).getTime();  // How long ago their last reaction was
