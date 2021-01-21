@@ -1,7 +1,7 @@
 import { TriggeredCommand } from "../../Types";
 import { client, config } from "../..";
 import { rand } from "../../util/math";
-import { getLevelNumber, getUserLevel, redisClient, setUserLevel } from "../../util/levels";
+import { getLevelNumber, getUserLevel, redisClient, setUserLevel, setLevelRoles } from "../../util/levels";
 import { DiscordAPIError, Guild, GuildMember, Role } from "discord.js";
 
 module.exports = <TriggeredCommand> {
@@ -20,52 +20,14 @@ module.exports = <TriggeredCommand> {
             let newLevel = getLevelNumber(level.xp);
             if (newLevel > level.level) {
                 message.reply(`🎉 Congrats! You just leveled up to level ${newLevel}!`);
+
                 const member = message.member;
 
-                
-                let newRole = member.guild.roles.cache.filter(role =>
-                    role.name.startsWith('Level') &&
-                    getLevelNumberFromRole(role) <= newLevel)
-                    .sort((a:Role, b:Role) => getLevelNumberFromRole(a) - getLevelNumberFromRole(b))
-                    .last();
-                
-                member.roles.cache.forEach(role =>
-                    (newRole.name.startsWith('Level') && role.id != newRole.id) ?
-                        member.roles.remove(role)
-                      : null
-                );
-                
-                member.roles.add(newRole);
+                setLevelRoles(member, newLevel);
 
-
-
-                
-                // if (/*User has any level roles */) {
-                //     const returnedRole = member.roles.cache.find(role => {return role.name.startsWith("Level")})
-                //     const roleLevel = returnedRole.name.substring(6);
-
-                //     if (config.levels.roles.includes(newLevel)) {
-                //         member.roles.remove(returnedRole);
-                //         member.roles.add(member.guild.roles.cache.find(role => {return role.name.endsWith(`Level ${newLevel}`)})) //This should just check if it's fully equal but idk the method
-                //     }
-
-                // } else {
-                //     if (config.levels.roles.includes(newLevel)) {
-                //         member.roles.add(member.guild.roles.cache.find(role => {return role.name.endsWith(`Level ${newLevel}`)})) //This should just check if it's fully equal but idk the method
-                //     } else {
-                //         // Loop through the config.levels.roles against newLevel to find the most recent level role?
-                //     }
-                // }
             }
 
             await setUserLevel(uid, level);
         }
     }
-}
-
-function getLevelNumberFromRole(role:Role) {
-    if (role.name.includes('Level')) {
-        return parseInt(role.name.match(/[0-9]+/)[0]);
-    }
-    return undefined;
 }
