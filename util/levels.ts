@@ -1,4 +1,4 @@
-import { Collection, Snowflake } from "discord.js";
+import { Collection, Snowflake, Role, Message, GuildMember } from "discord.js";
 import { createClient, RedisClient } from "redis";
 import { promisify } from "util";
 import { client, config } from "..";
@@ -70,4 +70,28 @@ export async function getRankedLeaderboard() {
                 return b.data.count - a.data.count;
             })
     };
+}
+
+export function getLevelNumberFromRole(role:Role) {
+    if (role.name.includes('Level')) {
+        return parseInt(role.name.match(/[0-9]+/)[0]);
+    }
+    return undefined;
+}
+
+export function setLevelRoles(member:GuildMember, newLevel:number) {
+    
+    let newRole = member.guild.roles.cache.filter(role =>
+        role.name.startsWith('Level') &&
+        getLevelNumberFromRole(role) <= newLevel)
+        .sort((a:Role, b:Role) => getLevelNumberFromRole(a) - getLevelNumberFromRole(b))
+        .last();
+    
+    member.roles.cache.forEach(role =>
+        (newRole.name.startsWith('Level') && role.id != newRole.id) ?
+            member.roles.remove(role)
+          : null
+    );
+    
+    member.roles.add(newRole);
 }
