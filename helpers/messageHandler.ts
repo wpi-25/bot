@@ -58,7 +58,7 @@ const processCommands = async (message:Message) => {
 
 const processTriggers = async (message:Message) => {  // Look for and run triggers
     if (!message.author.bot) {
-        triggers.forEach(trigger => {
+        triggers.forEach(async trigger => {
             try {
                 let evaluatorOutput = undefined;
                 switch (typeof trigger.trigger) {
@@ -75,7 +75,7 @@ const processTriggers = async (message:Message) => {  // Look for and run trigge
                         break;
                 }
                 if (evaluatorOutput) {  // We got *something*... pass it on
-                    trigger.execute(message, evaluatorOutput, client);
+                    await trigger.execute(message, evaluatorOutput, client);
                 }
             } catch (e) {
                 const error = new MessageEmbed()
