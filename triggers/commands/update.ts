@@ -14,12 +14,11 @@ module.exports = <Command> {
 
 export const updateBot = (message?:Message) => {
     if (message) message.channel.startTyping();
-    let process = exec('git pull', (error, stdout, stderr) => {
+    exec('git pull', async (error, stdout, stderr) => {
         console.log({error, stdout, stderr});
-    });
-    process.on('close', async code => {
         message.channel.stopTyping();
-        if (code == 0) {
+        await message.channel.send('```\n' + stdout + '\n``````\n' + stderr + '\n```');
+        if (error == null && !stdout.includes('up to date')) {
             if (message) await message.channel.send('Restarting...');
             shutdown();
         } else {
