@@ -1,4 +1,4 @@
-import { Collection, Snowflake } from "discord.js";
+import { Collection, GuildMember, Snowflake, User } from "discord.js";
 import { createClient, RedisClient } from "redis";
 import { promisify } from "util";
 import { client, config } from "..";
@@ -25,6 +25,38 @@ export async function getUserLevel(uid:Snowflake):Promise<LevelData> {
     let data = { count:parseInt(count)||0, xp:parseInt(xp)||0, level, last:new Date(parseInt(lastMsg)) };
     // console.log(`${uid} >`, data);
     return data;
+}
+
+/**
+ * Query the databse for the time of a user's last message
+ * @param uid the ID of the user to query for
+ * @param failover the value to return if database misses, `Date(0)` if not specified
+ */
+export async function getLastUserMessageTimestamp(uid:Snowflake, failover = new Date(0)) {
+    if (!redisClient) return failover;
+    let lastTimestamp = await get(`${uid}:last`);
+    return lastTimestamp ? new Date(parseInt(lastTimestamp)) : failover;
+}
+
+/**
+ * Query the databse for the time of a user's last reaction
+ * @param uid the ID of the user to query for
+ * @param failover the value to return if database misses, `Date(0)` if not specified
+ */
+export async function getLastUserReactionTimestamp(uid:Snowflake, failover = new Date(0)) {
+    if (!redisClient) return failover;
+    let lastTimestamp = await get(`${uid}:react`);
+    return lastTimestamp ? new Date(parseInt(lastTimestamp)) : failover;
+}
+
+/**
+ * Query the database for whether the active role is enabled for the user
+ * @param user the user to search for
+ */
+export async function getUserEnabled({id}:User|GuildMember) {
+    let enabledStatus = await get(`${id}:enabled`);
+    // TODO: make opt-in/out a config option (server-by-server?)
+    return enabledStatus == null || enabledStatus == 'true';    // Opt-out: `isEnabled == null ||`; opt-in: `isEnabled &&`
 }
 
 export function getLevelNumber(xp:number) {

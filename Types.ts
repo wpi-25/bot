@@ -85,5 +85,9 @@ export type Config = {
         leaderboardCooldown: number,
         commandChannels?: any
     },
-    vcPing?: any
+    vcPing?: any,
+    activePing?: {
+        timeout: number,
+        roles: any
+    }
 }
