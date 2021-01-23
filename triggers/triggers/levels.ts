@@ -1,7 +1,8 @@
 import { TriggeredCommand } from "../../Types";
-import { config } from "../..";
+import { client, config } from "../..";
 import { rand } from "../../util/math";
-import { getLevelNumber, getUserLevel, redisClient, setUserLevel } from "../../util/levels";
+import { getLevelNumber, getUserLevel, redisClient, setUserLevel, setLevelRoles } from "../../util/levels";
+import { DiscordAPIError, Guild, GuildMember, Role } from "discord.js";
 
 module.exports = <TriggeredCommand> {
     trigger: ()=>true,  // Trigger on every message
@@ -19,6 +20,11 @@ module.exports = <TriggeredCommand> {
             let newLevel = getLevelNumber(level.xp);
             if (newLevel > level.level) {
                 message.reply(`🎉 Congrats! You just leveled up to level ${newLevel}!`);
+
+                const member = message.member;
+
+                setLevelRoles(member, newLevel);
+
             }
 
             await setUserLevel(uid, level);
