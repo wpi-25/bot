@@ -4,7 +4,7 @@ import { URL } from "url";
 import { TriggeredCommand } from "../../Types";
 
 module.exports = <TriggeredCommand>{
-    trigger: /(?:https:\/\/)?(?:m.|vm.|www.)?tiktok.com\/[^ \n?]+\??/,
+    trigger: /(?:https:\/\/)?(?:m\.|vm\.|www\.)?tiktok\.com\/[^ \n?]+\??/,
     async execute(message, args:RegExpMatchArray, client) {
         if (message.embeds.length > 0) return;  // In an ideal world, this wouldn't be necessary, but TikTok embeds in Discord aren't very reliable, so check it there's one first
         message.channel.startTyping();  // Show that it's doing something
