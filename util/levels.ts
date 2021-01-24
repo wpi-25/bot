@@ -88,7 +88,7 @@ export function setLevelRoles(member:GuildMember, newLevel:number) {
         .last();
     
     member.roles.cache.forEach(role =>
-        (newRole.name.startsWith('Level') && role.id != newRole.id) ?
+        (role.name.startsWith('Level') && role.id != newRole.id) ?
             member.roles.remove(role)
           : null
     );
