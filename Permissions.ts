@@ -1,15 +1,15 @@
-import { User, Message, GuildMember, Snowflake} from "discord.js"
-import { Command, TypedSnowflake } from "./Types"
+import { User, Message, GuildMember, Snowflake } from 'discord.js';
+import { Command, TypedSnowflake } from './Types';
 
-let admins = <Array<TypedSnowflake>>[
-    "261908587943690242",    // Sam for now
-    "118455061222260736"     // Muirrum
+const admins = <Array<TypedSnowflake>>[
+    '261908587943690242', // Sam for now
+    '118455061222260736', // Muirrum
 ];
 
-export const hasPermission = (message:Message, command:Command) => {
-
-    let required = command.requiredPerms;
-    if (!required) { // If the command doesn't specify, default to public
+export const hasPermission = (message: Message, command: Command) => {
+    const required = command.requiredPerms;
+    if (!required) {
+        // If the command doesn't specify, default to public
         return true;
     }
 
@@ -17,13 +17,13 @@ export const hasPermission = (message:Message, command:Command) => {
     switch (required) {
         case 'public':
             return true;
-        
+
         case 'admin':
         case 'whitelist': // Whitelist inherits all the admins as well
             if (message.guild) {
-                let guildUser = message.guild.member(message.author);
+                const guildUser = message.guild.member(message.author);
                 if (required == 'admin') {
-                    return inTypedWhitelist(guildUser, admins)
+                    return inTypedWhitelist(guildUser, admins);
                 }
                 let localWhitelist = admins;
                 if (command.whitelist) {
@@ -34,21 +34,36 @@ export const hasPermission = (message:Message, command:Command) => {
                 return inTypedWhitelist(message.author, admins);
             }
     }
-}
+};
 
-export const inRole = (guildUser:GuildMember, role:Snowflake) => guildUser.roles.cache.find((roleData, roleID) => role == roleID) ? true : false;  // Look through the GuildMember's roles and see if this role is anywhere there
-export const inTypedSnowflake = (user:User|GuildMember, snowflake:TypedSnowflake) => {
-    if (snowflake.match(/^&\d+$/) && isGuildMember(user)) {   // Is a role
+export const inRole = (guildUser: GuildMember, role: Snowflake) =>
+    guildUser.roles.cache.find((roleData, roleID) => role == roleID)
+        ? true
+        : false; // Look through the GuildMember's roles and see if this role is anywhere there
+export const inTypedSnowflake = (
+    user: User | GuildMember,
+    snowflake: TypedSnowflake
+) => {
+    if (snowflake.match(/^&\d+$/) && isGuildMember(user)) {
+        // Is a role
         return inRole(user, snowflake.substr(1));
-    } else if (snowflake.match(/^\d+$/)) {  // Is a user
+    } else if (snowflake.match(/^\d+$/)) {
+        // Is a user
         return snowflake == user.id;
     } else {
         return false;
     }
-}
-export const inTypedWhitelist = (user:User|GuildMember, whitelist:Array<TypedSnowflake>) => {
+};
+export const inTypedWhitelist = (
+    user: User | GuildMember,
+    whitelist: Array<TypedSnowflake>
+) => {
     // Loop through the whitelist and look for anything this user is included in. It returns whether or not they are included in anything
-    return whitelist.find(snowflake => inTypedSnowflake(user, snowflake)) != undefined;   // Ughh this whole chain is super messy but it works. I don't want to touch this again
-}
+    return (
+        whitelist.find((snowflake) => inTypedSnowflake(user, snowflake)) !=
+        undefined
+    ); // Ughh this whole chain is super messy but it works. I don't want to touch this again
+};
 
-const isGuildMember = (tbd:User|GuildMember): tbd is GuildMember => ((tbd as GuildMember).guild) ? true : false;
+const isGuildMember = (tbd: User | GuildMember): tbd is GuildMember =>
+    (tbd as GuildMember).guild ? true : false;
