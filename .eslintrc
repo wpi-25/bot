@@ -2,17 +2,21 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "prettier"
     ],
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "prettier",
+        "prettier/@typescript-eslint"
     ],
     "rules": {
         "@typescript-eslint/explicit-module-boundary-types": 0,
         "@typescript-eslint/no-var-requires": 0,
         "no-case-declarations": 0,
-        "prefer-const": 1
+        "prefer-const": 1,
+        "prettier/prettier": 2
     }
 }
