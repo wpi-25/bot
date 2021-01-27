@@ -34,7 +34,7 @@ export type TriggeredCommand = {    // TODO: Create a better name for this type
      *  If `trigger` is a `RegExp`, it will be run against the message and the result will be passed to `execute(...)` in `args`  
      *  If `trigger` is a `Function`, `execute` will be run if it returns `true`
     */
-    trigger: String | RegExp | TriggerDeterminer,
+    trigger: string | RegExp | TriggerDeterminer,
     /** The code to run when triggered */
     execute(message:Message, args:any, client:Client): Promise<void>
 }
@@ -44,7 +44,7 @@ export type EditCommand = {
 }
 
 export type ReactionCommand = {
-    trigger: String | Emoji | Array<String> | Array<Emoji>,
+    trigger: string | Emoji | Array<string> | Array<Emoji>,
     execute(reaction:MessageReaction, user:User|PartialUser, args:any, client:Client): void
 }
 
