@@ -1,0 +1,9 @@
+version: "3"
+services:
+  gompei-db:
+    image: redis:alpine
+    container_name: gompei-db
+    volumes:
+      - ./storage:/data
+    ports:
+      - 6379:6379

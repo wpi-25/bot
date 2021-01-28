@@ -3,45 +3,48 @@ import { Command } from '../../Types';
 
 import fetch from 'node-fetch';
 
-
 module.exports = <Command>{
     name: 'xkcd',
     description: 'Gets an XKCD comic',
-    args: '[xkcd comic number or \'rand\']',
+    args: "[xkcd comic number or 'rand']",
     minArgs: 0,
     guildOnly: false,
     requiredPerms: 'public',
     async execute(message, args) {
-
-        let url = "https://xkcd.com/"
+        let url = 'https://xkcd.com/';
 
         if (args.length != 1) {
-            url += "info.0.json"
+            url += 'info.0.json';
         } else if (isNaN(parseInt(args[0])) && args[0].includes('rand')) {
-            let maxnum:number = (await(await(fetch(`${url}info.0.json`))).json()).num;
-            let num = Math.floor(Math.random() * maxnum) + 1;
+            const maxnum: number = (
+                await (await fetch(`${url}info.0.json`)).json()
+            ).num;
+            const num = Math.floor(Math.random() * maxnum) + 1;
             url += `${num}/info.0.json`;
         } else {
-            url += `${args[0]}/info.0.json`
+            url += `${args[0]}/info.0.json`;
         }
-        
-        let serverResponse = await fetch(url);
+
+        const serverResponse = await fetch(url);
         if (!serverResponse.ok) {
             throw 'Comic not found!';
         }
-        let response = await serverResponse.json();
+        const response = await serverResponse.json();
 
-        let embedFields = new Array<EmbedFieldData>();
+        const embedFields = new Array<EmbedFieldData>();
 
-        embedFields.push({name: "Link", value: `https://xkcd.com/${response.num}`})
+        embedFields.push({
+            name: 'Link',
+            value: `https://xkcd.com/${response.num}`,
+        });
 
         const embed = new MessageEmbed()
             .setTitle(`${response.safe_title}`)
             .setFooter(`${response.alt}`)
-            .setColor("#96A8C8")
+            .setColor('#96A8C8')
             .setImage(response.img)
             .addFields(embedFields);
 
-        message.channel.send(embed)
-    }
-}
+        message.channel.send(embed);
+    },
+};
