@@ -37,13 +37,16 @@ module.exports = <Command>{
         const fields: EmbedFieldData[] = [];
         onPage.forEach((val, index) => {
             const user = client.users.cache.get(val.uid);
+            const xp = `${val.data.xp.toLocaleString()} Exp.`.padEnd(14);
+            const level = `Lvl. ${val.data.level}`.padEnd(10);
+            const messages = `${val.data.count.toLocaleString()} Message${
+                val.data.count != 1 ? 's' : ''
+            }`.padEnd(14);
             fields.push({
                 name: `#${index + 1 + PAGE_SIZE * (page - 1)}: ${
                     user.username
                 }`,
-                value: `\`${val.data.xp} Exp.   Lvl. ${val.data.level}   ${
-                    val.data.count
-                } Message${val.data.count != 1 ? 's' : ''}\``,
+                value: '`' + xp + level + messages + '`',
             });
         });
         embed = embed.addFields(fields);
