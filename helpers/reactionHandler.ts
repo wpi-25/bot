@@ -1,21 +1,19 @@
-import { MessageReaction, User, PartialUser, Emoji } from 'discord.js';
-import { client } from '..';
-import { reactions } from './modules';
+import { MessageReaction, User, PartialUser, Emoji } from "discord.js";
+import { client } from "..";
+import { reactions } from "./modules";
 
-const react = async (reaction: MessageReaction, user: User | PartialUser) => {
-    console.log(
-        `${user.tag} reacted with ${reaction.emoji.name} in #${reaction.message.channel.id}`
-    );
-    reactions.forEach((command) => {
+const react = async (reaction:MessageReaction, user:User|PartialUser) => {
+    console.log(`${user.tag} reacted with ${reaction.emoji.name} in #${reaction.message.channel.id}`);
+    reactions.forEach(command => {
         let evaluatorOutput = undefined;
         switch (typeof command.trigger) {
             case 'object':
                 if (Array.isArray(command.trigger)) {
-                    command.trigger.findIndex((e: Emoji | string) => {
+                    command.trigger.findIndex((e) => {
                         switch (typeof e) {
-                            case 'object': // It's an Emoji
+                            case 'object':   // It's an Emoji
                                 return reaction.emoji.id == e.id;
-
+                            
                             case 'string':
                                 if (e.length > 1) {
                                     return reaction.emoji.id == e;
@@ -26,7 +24,7 @@ const react = async (reaction: MessageReaction, user: User | PartialUser) => {
                     });
                 }
                 break;
-
+            
             case 'string':
                 if (command.trigger.length > 1) {
                     evaluatorOutput = reaction.emoji.id == command.trigger;
@@ -36,10 +34,10 @@ const react = async (reaction: MessageReaction, user: User | PartialUser) => {
                 break;
         }
         if (evaluatorOutput) {
-            command.execute(reaction, user, evaluatorOutput);
+            command.execute(reaction, user, evaluatorOutput, client);
         }
     });
-};
+}
 
 export function setupReactionListeners() {
     client.on('messageReactionAdd', react);

@@ -6,7 +6,7 @@ module.exports = <Command>{
     description: 'Restart/update the bot',
     requiredPerms: 'admin',
     async execute(message) {
-        await message.reply("i'll be back!");
+        await message.reply('i\'ll be back!');
         shutdown();
-    },
-};
+    }
+}

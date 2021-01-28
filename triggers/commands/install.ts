@@ -2,6 +2,7 @@ import { MessageEmbed } from 'discord.js';
 import { commands, triggers, reactions } from '../../helpers/modules';
 import { Command, TriggeredCommand, ReactionCommand } from '../../Types';
 
+
 module.exports = <Command>{
     name: 'install',
     description: 'Install a command',
@@ -16,27 +17,21 @@ module.exports = <Command>{
                 const newCommand = <Command>require(`./${commandName}.ts`);
                 commands.set(newCommand.name, newCommand);
 
-                const commandSuccess = new MessageEmbed()
+                let commandSuccess = new MessageEmbed()
                     .setColor('#4caf50')
-                    .setDescription(
-                        `Command \`${commandName}\` was installed!`
-                    );
-
+                    .setDescription(`Command \`${commandName}\` was installed!`);
+                
                 message.channel.send(commandSuccess);
                 break;
-
+            
             case 'trigger':
-                const newTrigger = <TriggeredCommand>(
-                    require(`../triggers/${commandName}.ts`)
-                );
+                const newTrigger = <TriggeredCommand>require(`../triggers/${commandName}.ts`);
                 triggers.set(commandName, newTrigger);
 
-                const triggerSuccess = new MessageEmbed()
+                let triggerSuccess = new MessageEmbed()
                     .setColor('#4caf50')
-                    .setDescription(
-                        `Trigger \`${commandName}\` was installed!`
-                    );
-
+                    .setDescription(`Trigger \`${commandName}\` was installed!`);
+                
                 message.channel.send(triggerSuccess);
                 break;
 
@@ -47,28 +42,24 @@ module.exports = <Command>{
             //     let editSuccess = new MessageEmbed()
             //         .setColor('#4caf50')
             //         .setDescription(`Edit command \`${commandName}\` was installed!`);
-
+                
             //     message.channel.send(editSuccess);
             //     break;
-
+            
             case 'reaction':
-                const newReaction = <ReactionCommand>(
-                    require(`../react/${commandName}.ts`)
-                );
+                const newReaction = <ReactionCommand>require(`../react/${commandName}.ts`);
                 reactions.set(commandName, newReaction);
 
-                const reactionSuccess = new MessageEmbed()
+                let reactionSuccess = new MessageEmbed()
                     .setColor('#4caf50')
-                    .setDescription(
-                        `Reaction command \`${commandName}\` was installed!`
-                    );
-
+                    .setDescription(`Reaction command \`${commandName}\` was installed!`);
+                
                 message.channel.send(reactionSuccess);
                 break;
-
+            
             default:
                 throw this.args;
         }
         message.delete();
-    },
-};
+    }
+}
