@@ -44,6 +44,7 @@ module.exports = <Command>{
             }`.padEnd(14);
             fields.push({
                 name: `#${index + 1 + PAGE_SIZE * (page - 1)}: ${
+                    message.guild.members.cache.get(user.id)?.nickname ||
                     user.username
                 }`,
                 value: '`' + xp + level + messages + '`',
