@@ -9,5 +9,5 @@ module.exports = <Command>{
     async execute(message) {
         await message.reply('shutting down!');
         shutdown(true);
-    }
-}
+    },
+};
