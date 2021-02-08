@@ -177,3 +177,4 @@ dist
 config.json
 *.rdb
 .dccache
+.commit
