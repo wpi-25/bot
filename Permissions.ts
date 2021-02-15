@@ -4,6 +4,7 @@ import { Command, TypedSnowflake } from './Types';
 const admins = <Array<TypedSnowflake>>[
     '261908587943690242', // Sam for now
     '118455061222260736', // Muirrum
+    '262245801416327169', // Brooke
 ];
 
 export const hasPermission = (message: Message, command: Command) => {
