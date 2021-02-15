@@ -1,10 +1,20 @@
-import { MessageReaction, User, PartialUser, Emoji } from 'discord.js';
+import {
+    MessageReaction,
+    User,
+    PartialUser,
+    Emoji,
+    TextChannel,
+    DMChannel,
+} from 'discord.js';
 import { client } from '..';
 import { reactions } from './modules';
 
 const react = async (reaction: MessageReaction, user: User | PartialUser) => {
+    const channel = <TextChannel | DMChannel>reaction.message.channel;
     console.log(
-        `${user.tag} reacted with ${reaction.emoji.name} in #${reaction.message.channel.id}`
+        `${user.tag} reacted with ${reaction.emoji.name} in #${
+            'name' in channel ? channel.name : channel.recipient.username
+        }`
     );
     reactions.forEach((command) => {
         let evaluatorOutput = undefined;
