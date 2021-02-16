@@ -33,7 +33,7 @@ export async function getUserLevel(uid: Snowflake): Promise<LevelData> {
 }
 
 export function getLevelNumber(xp: number) {
-    return Math.max(Math.floor(Math.log2(xp / 10)), 0);
+    return xp ? Math.max(Math.floor(Math.log2(xp / 10)), 0) : 0;
 }
 
 export function getLevelCost(level: number) {
