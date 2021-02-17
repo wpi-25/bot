@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 import { Config } from './Types';
 import './helpers/lifecycle';
-import * as bot_config from './config.json';
+import bot_config from './config.json';
 
 export const config: Config = bot_config; // Just to shim it into shape and provide better types
 
@@ -12,6 +12,7 @@ import { readyMembers, setupMemberListeners } from './helpers/members';
 import { readyVC, setupVCListeners } from './helpers/vc';
 import { setupMessageListeners } from './helpers/messageHandler';
 import { setupReactionListeners } from './helpers/reactionHandler';
+import { setupTimedViewable } from './helpers/channelTimeDisable';
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -19,6 +20,7 @@ client.on('ready', () => {
 
     readyMembers();
     readyVC();
+    setupTimedViewable();
 });
 
 setupMessageListeners();

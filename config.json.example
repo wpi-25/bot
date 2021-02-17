@@ -26,5 +26,14 @@
     "vcPing": {
         "guild1": "role1",
         "guild2": "role2"
+    },
+    "timedViewable": {
+        "announcementChannel": "channel1",
+        "channels": {
+            "channel2": {
+                "yes": "0 7 * * *",
+                "no": "0 23 * * *"
+            }
+        }
     }
 }
