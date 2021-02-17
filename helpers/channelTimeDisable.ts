@@ -10,6 +10,7 @@ import { schedule } from 'node-cron';
 
 let announcementChannel: TextChannel;
 export function setupTimedViewable() {
+    if (!('timedViewable' in config)) return;
     if ('announcementChannel' in config.timedViewable) {
         announcementChannel = <TextChannel>(
             client.channels.cache.get(

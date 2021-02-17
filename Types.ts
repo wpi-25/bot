@@ -104,7 +104,7 @@ export type Config = {
         commandChannels?: { [key: string]: string | string[] };
     };
     vcPing?: { [key: string]: string };
-    timedViewable: {
+    timedViewable?: {
         announcementChannel?: string;
         channels: {
             [key: string]: {
