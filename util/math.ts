@@ -5,3 +5,8 @@ export function rand(range: number[]) {
         Math.min(...range)
     );
 }
+
+/** Delay async execution. Returns a promise that resolves after a specified time */
+export function delay(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
