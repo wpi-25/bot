@@ -3,7 +3,7 @@ import { createClient, RedisClient } from 'redis';
 import { promisify } from 'util';
 import { client, config } from '..';
 import { LevelData } from '../Types';
-import { delay } from './math';
+import { coerceBool, ensureSingleInstance } from './math';
 
 export let redisClient: RedisClient;
 export let get: (key: string) => Promise<string>,
@@ -89,14 +89,11 @@ export function getLevelNumberFromRole(role: Role) {
     return undefined;
 }
 
-/**
- * Update a member's level roles
- * @param member the GuildMember to update
- * @param newLevel the member's level
- * @returns whether any roles were removed
- */
-export async function setLevelRoles(member: GuildMember, newLevel: number) {
-    const newRole = member.guild.roles.cache
+export async function getLevelRoleChanges(
+    member: GuildMember,
+    newLevel: number
+) {
+    const add = member.guild.roles.cache
         .filter(
             (role) =>
                 role.name.startsWith('Level') &&
@@ -108,65 +105,121 @@ export async function setLevelRoles(member: GuildMember, newLevel: number) {
         )
         .last();
 
-    let didAnything = false;
+    const remove: Role[] = [];
     for await (const snowflakeAndRole of member.roles.cache) {
         const role = snowflakeAndRole[1];
-        if (role.name.startsWith('Level') && role.id != newRole.id) {
-            await member.roles.remove(role);
-            didAnything = true;
+        if (role.name.startsWith('Level') && role.id != add.id) {
+            remove.push(role);
         }
     }
 
-    // console.log({ newLevel, newRole: newRole?.name, didAnything });
-    if (newRole) await member.roles.add(newRole);
-    return didAnything || newRole ? true : false;
+    return { add: member.roles.cache.has(add?.id) ? undefined : add, remove };
 }
 
-export async function queueLevelUpdates() {
-    const loopSpeed = 250; // The minimum time between member updates
-    /*
-     * 4 member updates per second should
-     * hopefully leave us with enough
-     * rate limit wiggle room for
-     * the rest of the bot to keep working
-     */
-    console.log(
-        `Queueing level updates with ${loopSpeed} ms min between members`
+export async function needsLevelRoleChanges(
+    member: GuildMember,
+    newLevel: number
+) {
+    const roleChanges = await getLevelRoleChanges(member, newLevel);
+    const needsChange = coerceBool(
+        roleChanges.add || roleChanges.remove.length
     );
-    client.user.setPresence({
-        status: 'dnd',
-        activity: { type: 'WATCHING', name: `level updates` },
-    });
+    // console.log(roleChanges, needsChange);
+    return needsChange;
+}
+
+/**
+ * Update a member's level roles
+ * @param member the GuildMember to update
+ * @param newLevel the member's level
+ * @returns whether any roles were removed
+ */
+export async function setLevelRoles(member: GuildMember, newLevel: number) {
+    const { add: newRole, remove: oldRoles } = await getLevelRoleChanges(
+        member,
+        newLevel
+    );
+
+    const removedRoles = oldRoles.length ? true : false;
+    for await (const role of oldRoles) {
+        await member.roles.remove(role);
+    }
+
+    // console.log({
+    //     newLevel,
+    //     newRole: newRole?.name,
+    //     oldRoles: oldRoles.map((role) => role.name),
+    // });
+    if (newRole) await member.roles.add(newRole);
+    return coerceBool(removedRoles || newRole);
+}
+
+export let queuedLevelUpdates: Snowflake[] = [];
+
+export async function queueLevelUpdates() {
+    // const loopSpeed = 250; // The minimum time between member updates
+    // /*
+    //  * 4 member updates per second should
+    //  * hopefully leave us with enough
+    //  * rate limit wiggle room for
+    //  * the rest of the bot to keep working
+    //  */
+    // console.log(
+    //     `Queueing level updates with ${loopSpeed} ms min between members`
+    // );
+    // client.user.setPresence({
+    //     status: 'dnd',
+    //     activity: { type: 'WATCHING', name: `level updates` },
+    // });
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for await (const [gid, guild] of client.guilds.cache) {
         // for awaits to keep timing predictable
         // and (hopefully) handle member changes mid-run
         // console.log(guild.name);
-        console.log(guild.members.cache.map((member) => member.displayName));
+        // console.log(guild.members.cache.map((member) => member.displayName));
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        for await (const [uid, member] of guild.members.cache) {
-            console.log(member.displayName);
-            const taskStartTime = new Date();
-            const hadUpdate = await setLevelRoles(
+        for await (const [uid] of guild.members.cache) {
+            const member = await guild.members.fetch(uid);
+            const needsChange = await needsLevelRoleChanges(
                 member,
                 (await getUserLevel(member.id)).level
             );
-            const taskTimeElapsed =
-                new Date().getTime() - taskStartTime.getTime();
-            console.log(
-                `Updating roles for ${
-                    member.displayName
-                } took ${taskTimeElapsed}ms (${
-                    !hadUpdate ? "didn't remove any roles" : 'removed roles'
-                })`
-            );
-            if (taskTimeElapsed < loopSpeed) {
-                await delay(loopSpeed - taskTimeElapsed);
+
+            // console.log(
+            //     member.displayName,
+            //     `${needsChange ? 'needs change' : 'does not need change'}`
+            // );
+            if (needsChange) {
+                queuedLevelUpdates.push(member.id);
             }
+            // const taskStartTime = new Date();
+            // const hadUpdate = await setLevelRoles(
+            //     member,
+            //     (await getUserLevel(member.id)).level
+            // );
+            // const taskTimeElapsed =
+            //     new Date().getTime() - taskStartTime.getTime();
+            // console.log(
+            //     `Updating roles for ${
+            //         member.displayName
+            //     } took ${taskTimeElapsed}ms (${
+            //         !hadUpdate ? "didn't remove any roles" : 'removed roles'
+            //     })`
+            // );
+            // if (taskTimeElapsed < loopSpeed) {
+            //     await delay(loopSpeed - taskTimeElapsed);
+            // }
         }
     }
 
-    client.user.setPresence({ status: 'online' });
+    queuedLevelUpdates = ensureSingleInstance(queuedLevelUpdates);
+    console.log(
+        `Queued ${queuedLevelUpdates.length} update${
+            queuedLevelUpdates.length != 1 ? 's' : ''
+        }`
+    );
+
+    // client.user.setPresence({ status: 'online' });
 }
