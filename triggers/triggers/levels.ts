@@ -7,6 +7,7 @@ import {
     redisClient,
     setUserLevel,
     setLevelRoles,
+    queuedLevelUpdates,
 } from '../../util/levels';
 
 module.exports = <TriggeredCommand>{
@@ -28,14 +29,28 @@ module.exports = <TriggeredCommand>{
             }
             level.last = message.createdAt;
             const newLevel = getLevelNumber(level.xp);
-            if (newLevel > level.level) {
-                message.reply(
-                    `🎉 Congrats! You just leveled up to level ${newLevel}!`
-                );
+            const levelUpdateQueued = queuedLevelUpdates.includes(
+                message.author.id
+            );
+            if (newLevel != level.level || levelUpdateQueued) {
+                if (newLevel > level.level) {
+                    message.reply(
+                        `🎉 Congrats! You just leveled up to level ${newLevel}!`
+                    );
+                }
 
                 const member = message.member;
 
-                setLevelRoles(member, newLevel);
+                const changedStuff = await setLevelRoles(member, newLevel);
+                if (levelUpdateQueued) {
+                    console.log(
+                        `${member.displayName} had an update queued so their roles were updated (something happened: ${changedStuff})`
+                    );
+                    queuedLevelUpdates.splice(
+                        queuedLevelUpdates.indexOf(member.id),
+                        1
+                    );
+                }
             }
 
             await setUserLevel(uid, level);

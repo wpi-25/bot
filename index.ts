@@ -12,6 +12,7 @@ import { readyMembers, setupMemberListeners } from './helpers/members';
 import { readyVC, setupVCListeners } from './helpers/vc';
 import { setupMessageListeners } from './helpers/messageHandler';
 import { setupReactionListeners } from './helpers/reactionHandler';
+import { queueLevelUpdates } from './util/levels';
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`);
@@ -19,6 +20,8 @@ client.on('ready', () => {
 
     readyMembers();
     readyVC();
+
+    queueLevelUpdates();
 });
 
 setupMessageListeners();
