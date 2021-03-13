@@ -108,7 +108,7 @@ export async function getLevelRoleChanges(
     const remove: Role[] = [];
     for await (const snowflakeAndRole of member.roles.cache) {
         const role = snowflakeAndRole[1];
-        if (role.name.startsWith('Level') && role.id != add.id) {
+        if (role.name.startsWith('Level') && role.id != add?.id) {
             remove.push(role);
         }
     }
