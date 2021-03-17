@@ -2,7 +2,11 @@ import { EmbedFieldData, MessageEmbed } from 'discord.js';
 import { client, config } from '../..';
 import { Command } from '../../Types';
 import { commandAllowed } from '../../util/commands';
-import { getRankedLeaderboard, redisClient } from '../../util/levels';
+import {
+    getLevelNumber,
+    getRankedLeaderboard,
+    redisClient,
+} from '../../util/levels';
 import { getChannelList, getRandomHexColor } from '../../util/text';
 
 const PAGE_SIZE = 10;
@@ -38,7 +42,7 @@ module.exports = <Command>{
         onPage.forEach((val, index) => {
             const user = client.users.cache.get(val.uid);
             const xp = `${val.data.xp.toLocaleString()} Exp.`.padEnd(14);
-            const level = `Lvl. ${val.data.level}`.padEnd(10);
+            const level = `Lvl. ${getLevelNumber(val.data.xp)}`.padEnd(10);
             const messages = `${val.data.count.toLocaleString()} Message${
                 val.data.count != 1 ? 's' : ''
             }`.padEnd(14);

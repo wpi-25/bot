@@ -6,8 +6,7 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier",
-        "prettier/@typescript-eslint"
+        "prettier"
     ],
     "rules": {
         "@typescript-eslint/explicit-module-boundary-types": 0,
@@ -15,6 +14,6 @@
         "@typescript-eslint/no-unused-vars": 2,
         "no-case-declarations": 0,
         "prefer-const": 1,
-        "prettier/prettier": 2
+        "prettier/prettier": 1
     }
 }
