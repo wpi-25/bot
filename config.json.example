@@ -18,6 +18,16 @@
             1000,
             2000
         ],
+        "ignorePrefix": [
+            "!", 
+            "m!", 
+            "m.", 
+            "p!", 
+            "//",
+            "i-",
+            ",",
+            "git"
+        ],
         "commandChannels": {
             "guild1": "channel1",
             "guild2": ["channel2", "channel3"]
