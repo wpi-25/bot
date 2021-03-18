@@ -102,6 +102,7 @@ export type Config = {
         timeout: number;
         leaderboardCooldown: number;
         commandChannels?: { [key: string]: string | string[] };
+        ignorePrefix: string[];
     };
     vcPing?: { [key: string]: string };
 };

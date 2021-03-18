@@ -13,7 +13,18 @@ import {
 module.exports = <TriggeredCommand>{
     trigger: () => true, // Trigger on every message
     async execute(message) {
-        if (redisClient && !message.content.startsWith(config.prefix)) {
+        if (
+            redisClient &&
+            !(
+                // If it starts with none of the prefixes
+                (
+                    message.content.startsWith(config.prefix) ||
+                    config.levels.ignorePrefix.find((element) =>
+                        message.content.startsWith(element)
+                    )
+                )
+            )
+        ) {
             // If levels are enabled and it's not a command
             const uid = message.author.id;
             const level = await getUserLevel(uid);
