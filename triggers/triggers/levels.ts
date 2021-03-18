@@ -17,9 +17,11 @@ module.exports = <TriggeredCommand>{
             redisClient &&
             !(
                 // If it starts with none of the prefixes
-                message.content.startsWith(config.prefix) ||
-                config.levels.ignorePrefix.find((element) =>
-                    message.content.startsWith(element)
+                (
+                    message.content.startsWith(config.prefix) ||
+                    config.levels.ignorePrefix.find((element) =>
+                        message.content.startsWith(element)
+                    )
                 )
             )
         ) {
