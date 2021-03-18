@@ -20,13 +20,7 @@
         ],
         "ignorePrefix": [
             "!", 
-            "m!", 
-            "m.", 
-            "p!", 
-            "//",
-            "i-",
-            ",",
-            "git"
+            "m!"
         ],
         "commandChannels": {
             "guild1": "channel1",
