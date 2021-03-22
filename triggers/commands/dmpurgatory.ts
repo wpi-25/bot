@@ -1,7 +1,4 @@
-import { TextChannel } from 'discord.js';
-import { listenerCount } from 'process';
 import { Command } from '../../Types';
-import { getIDFromTag } from '../../util/text';
 
 module.exports = <Command>{
     name: 'dmpurgatory',
@@ -11,8 +8,8 @@ module.exports = <Command>{
     requiredPerms: 'admin',
     guildOnly: true,
     async execute(message, args, client) {
-        var counter = 0; // Only up to 10 members at a time to keep the bot from being rate limited
-        var canDM = true;
+        let counter = 0; // Only up to 10 members at a time to keep the bot from being rate limited
+        let canDM = true;
         const purgatoryRole = '815671753874604054';
         const allowedAccessRoles = [
             '808759766771433473',
