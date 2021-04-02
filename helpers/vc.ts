@@ -29,7 +29,7 @@ export function setupVCListeners() {
                 console.log(
                     `${newState.member.displayName} joined ${
                         newState.guild.channels.cache.get(newState.channelID)
-                            .name
+                            ?.name
                     }`
                 );
                 if (newState.guild.id in config.vcPing) {
@@ -40,7 +40,7 @@ export function setupVCListeners() {
                 console.log(
                     `${newState.member.displayName} left ${
                         oldState.guild.channels.cache.get(oldState.channelID)
-                            .name
+                            ?.name
                     }`
                 );
                 if (oldState.guild.id in config.vcPing) {
@@ -54,10 +54,10 @@ export function setupVCListeners() {
                 console.log(
                     `${newState.member.displayName} moved from ${
                         oldState.guild.channels.cache.get(oldState.channelID)
-                            .name
+                            ?.name
                     } to ${
                         newState.guild.channels.cache.get(newState.channelID)
-                            .name
+                            ?.name
                     }`
                 );
                 if (
