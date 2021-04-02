@@ -18,6 +18,10 @@
             1000,
             2000
         ],
+        "ignorePrefix": [
+            "!", 
+            "m!"
+        ],
         "commandChannels": {
             "guild1": "channel1",
             "guild2": ["channel2", "channel3"]
