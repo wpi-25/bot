@@ -25,3 +25,5 @@ while true; do # Loop forever
         break
     fi
 done
+echo "Press any key to continue"
+read -n 1
