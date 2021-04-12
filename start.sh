@@ -7,7 +7,7 @@ while true; do # Loop forever
         fi
         # Attempt to update dependencies
         COMMITFILE=./.commit
-        LATESTCOMMIT=`git show | grep commit | cut -c8-14`
+        LATESTCOMMIT=`git show | grep "commit " | cut -c8-14`
         echo "Last commit:  " `cat $COMMITFILE`
         echo "Latest commit: $LATESTCOMMIT"
         if [ -f "$COMMITFILE" ] && [ `cat $COMMITFILE` == "$LATESTCOMMIT" ]; then  # We're up to date
@@ -18,7 +18,7 @@ while true; do # Loop forever
             # If package.json was modified
             if git diff-tree --no-commit-id --name-only -r $LATESTCOMMIT | grep package.json
             then
-                npm install # Install updated/new dependencies
+                npm ci # Install updated/new dependencies
             fi
         fi
     else
