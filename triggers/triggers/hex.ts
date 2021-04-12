@@ -3,7 +3,7 @@ import { TriggeredCommand } from '../../Types';
 
 module.exports = <TriggeredCommand>{
     trigger: (message) =>
-        message.content.match(/(#[0-9a-f]{6})/g)?.filter((match) => {
+        message.content.match(/(#[0-9a-fA-F]{6})/g)?.filter((match) => {
             // If there's no matches, ?. just returns undefined for the whole object and we won't evaluate anymore
             // We're trying to get rid of any false positives - part of a channel tag
             const channels = message.content.match(
@@ -22,7 +22,7 @@ module.exports = <TriggeredCommand>{
     async execute(message, args: RegExpMatchArray) {
         args.forEach((val) => {
             message.channel.send(
-                new MessageEmbed().setTitle(val).setColor(val)
+                new MessageEmbed().setTitle(val.toLowerCase()).setColor(val)
             );
         });
     },
