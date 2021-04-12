@@ -30,5 +30,6 @@
     "vcPing": {
         "guild1": "role1",
         "guild2": "role2"
-    }
+    },
+    "modMail": "channel"
 }

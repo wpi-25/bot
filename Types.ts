@@ -5,6 +5,7 @@ import {
     User,
     MessageReaction,
     PartialUser,
+    Snowflake,
 } from 'discord.js';
 
 /** A command that is triggered by the prefix followed by the name.
@@ -105,4 +106,5 @@ export type Config = {
         ignorePrefix: string[];
     };
     vcPing?: { [key: string]: string };
+    modMail: Snowflake;
 };
