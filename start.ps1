@@ -22,7 +22,7 @@ while ($true) {
         Write-Output "Saving commit to file"
         Out-File -FilePath $COMMITFILE -InputObject $LATEST_COMMIT
         if (@(git diff-tree --no-commit-id --name-only -r $LATEST_COMMIT) -contains "package.json") {
-            npm install
+            npm ci
         }
     } else {
         break;
