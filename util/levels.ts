@@ -184,7 +184,9 @@ export async function queueLevelUpdates() {
             const member = await guild.members.fetch(uid);
             const needsChange = await needsLevelRoleChanges(
                 member,
-                (await getUserLevel(member.id)).level
+                (
+                    await getUserLevel(member.id)
+                ).level
             );
 
             // console.log(
