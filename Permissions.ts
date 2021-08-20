@@ -22,7 +22,9 @@ export const hasPermission = (message: Message, command: Command) => {
         case 'admin':
         case 'whitelist': // Whitelist inherits all the admins as well
             if (message.guild) {
-                const guildUser = message.guild.member(message.author);
+                const guildUser = message.guild.members.cache.get(
+                    message.author.id
+                );
                 if (required == 'admin') {
                     return inTypedWhitelist(guildUser, admins);
                 }
