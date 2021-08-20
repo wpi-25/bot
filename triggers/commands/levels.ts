@@ -55,6 +55,6 @@ module.exports = <Command>{
             });
         });
         embed = embed.addFields(fields);
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     },
 };

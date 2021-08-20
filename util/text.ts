@@ -1,4 +1,4 @@
-import { Snowflake } from 'discord.js';
+import { HexColorString, Snowflake } from 'discord.js';
 import { rand } from './math';
 
 export const getTextAfter = (fragment: string, main: string) =>
@@ -27,7 +27,7 @@ export const getIDFromTag = (mention: string) => {
     return mention;
 };
 
-export function getRandomHexColor() {
+export function getRandomHexColor(): HexColorString {
     return `#${rand([0, 0xffffff]).toString(16)}`;
 }
 

@@ -7,7 +7,7 @@ module.exports = <TriggeredCommand>{
     trigger: /(?:https:\/\/)?(?:m\.|vm\.|www\.)?tiktok\.com\/[^ \n?]+\??/,
     async execute(message, args: RegExpMatchArray) {
         if (message.embeds.length > 0) return; // In an ideal world, this wouldn't be necessary, but TikTok embeds in Discord aren't very reliable, so check it there's one first
-        message.channel.startTyping(); // Show that it's doing something
+        message.channel.sendTyping(); // Show that it's doing something
         const url = args[0];
         const response = await fetch(url, {
             headers: {
@@ -27,7 +27,6 @@ module.exports = <TriggeredCommand>{
         );
         if (apiResponse.ok) {
             const data = await apiResponse.json();
-            message.channel.stopTyping();
             if ('status_msg' in data) {
                 // If something went wrong, the api returns a status_msg property
                 throw '```json\n' + JSON.stringify(data) + '\n```';
@@ -39,10 +38,9 @@ module.exports = <TriggeredCommand>{
                 .setImage(data.thumbnail_url) // Until we can get a clean URL, we'll just send the cover image
                 .setURL(cleanURL)
                 .setColor(Math.round(Math.random()) ? '#69C9D0' : '#EE1D52');
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
             console.log(data);
         } else {
-            message.channel.stopTyping();
             throw await apiResponse.text();
         }
     },

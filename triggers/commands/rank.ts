@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { HexColorString, MessageEmbed } from 'discord.js';
 import { client, config } from '../..';
 import { Command } from '../../Types';
 import { commandAllowed } from '../../util/commands';
@@ -50,15 +50,15 @@ module.exports = <Command>{
         const data = leaderboard.data[rank].data;
         const embed = new MessageEmbed()
             .setAuthor(user.name, user.pfpURL)
-            .setColor(user.color)
+            .setColor(<HexColorString>user.color)
             .setTitle(`Rank #${rank + 1}`)
-            .addField('Messages', data.count, true)
-            .addField('XP', data.xp, true)
-            .addField('Level', data.level, true)
+            .addField('Messages', data.count.toString(), true)
+            .addField('XP', data.xp.toString(), true)
+            .addField('Level', data.level.toString(), true)
             .setDescription(
                 `${getLevelCost(data.level + 1) - data.xp}XP to next level`
             )
             .setTimestamp(leaderboard.cacheDate);
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     },
 };

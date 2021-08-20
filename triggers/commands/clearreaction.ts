@@ -44,18 +44,20 @@ module.exports = <Command>{
         });
 
         const myMessage = await message.reply({
-            embed: new MessageEmbed()
-                .setTitle(
-                    `${reactionCount} Reaction${
-                        reactionCount != 1 ? 's' : ''
-                    } Deleted`
-                )
-                .setDescription(
-                    `from ${messageCount} message${
-                        messageCount != 1 ? 's' : ''
-                    }`
-                )
-                .setColor('#4caf50'),
+            embeds: [
+                new MessageEmbed()
+                    .setTitle(
+                        `${reactionCount} Reaction${
+                            reactionCount != 1 ? 's' : ''
+                        } Deleted`
+                    )
+                    .setDescription(
+                        `from ${messageCount} message${
+                            messageCount != 1 ? 's' : ''
+                        }`
+                    )
+                    .setColor('#4caf50'),
+            ],
         });
         console.log(
             `Removed ${reactionCount} reaction${

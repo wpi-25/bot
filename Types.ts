@@ -106,5 +106,5 @@ export type Config = {
         ignorePrefix: string[];
     };
     vcPing?: { [key: string]: string };
-    modMail: Snowflake;
+    modMail?: Snowflake;
 };

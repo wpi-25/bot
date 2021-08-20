@@ -8,7 +8,7 @@ export function readyVC() {
                 const guildMembers = guild.members.cache;
                 guildMembers.forEach((member, UID) => {
                     const state = vcStates.find((state, key) => key == UID);
-                    if (state?.channelID) {
+                    if (state?.channelId) {
                         // In VC
                         // console.log(`${member.displayName} is in ${guild.channels.cache.get(state.channelID).name}`);
                         member.roles.add(config.vcPing[gid]);
@@ -25,10 +25,10 @@ export function readyVC() {
 export function setupVCListeners() {
     if ('vcPing' in config) {
         client.on('voiceStateUpdate', (oldState, newState) => {
-            if (!oldState.channelID && newState.channelID) {
+            if (!oldState.channelId && newState.channelId) {
                 console.log(
                     `${newState.member.displayName} joined ${
-                        newState.guild.channels.cache.get(newState.channelID)
+                        newState.guild.channels.cache.get(newState.channelId)
                             ?.name
                     }`
                 );
@@ -36,10 +36,10 @@ export function setupVCListeners() {
                     console.log('in known guild');
                     newState.member.roles.add(config.vcPing[newState.guild.id]);
                 }
-            } else if (oldState.channelID && !newState.channelID) {
+            } else if (oldState.channelId && !newState.channelId) {
                 console.log(
                     `${newState.member.displayName} left ${
-                        oldState.guild.channels.cache.get(oldState.channelID)
+                        oldState.guild.channels.cache.get(oldState.channelId)
                             ?.name
                     }`
                 );
@@ -49,14 +49,14 @@ export function setupVCListeners() {
                         config.vcPing[oldState.guild.id]
                     );
                 }
-            } else if (oldState?.channelID != newState?.channelID) {
+            } else if (oldState?.channelId != newState?.channelId) {
                 // Users move from one channel to another but disconnect when switching guilds so this never occurs
                 console.log(
                     `${newState.member.displayName} moved from ${
-                        oldState.guild.channels.cache.get(oldState.channelID)
+                        oldState.guild.channels.cache.get(oldState.channelId)
                             ?.name
                     } to ${
-                        newState.guild.channels.cache.get(newState.channelID)
+                        newState.guild.channels.cache.get(newState.channelId)
                             ?.name
                     }`
                 );

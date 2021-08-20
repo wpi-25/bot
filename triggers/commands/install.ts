@@ -22,7 +22,7 @@ module.exports = <Command>{
                         `Command \`${commandName}\` was installed!`
                     );
 
-                message.channel.send(commandSuccess);
+                message.channel.send({ embeds: [commandSuccess] });
                 break;
 
             case 'trigger':
@@ -37,7 +37,7 @@ module.exports = <Command>{
                         `Trigger \`${commandName}\` was installed!`
                     );
 
-                message.channel.send(triggerSuccess);
+                message.channel.send({ embeds: [triggerSuccess] });
                 break;
 
             // case 'edit':
@@ -63,7 +63,7 @@ module.exports = <Command>{
                         `Reaction command \`${commandName}\` was installed!`
                     );
 
-                message.channel.send(reactionSuccess);
+                message.channel.send({ embeds: [reactionSuccess] });
                 break;
 
             default:

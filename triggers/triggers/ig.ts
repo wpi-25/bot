@@ -9,7 +9,7 @@ module.exports = <TriggeredCommand>{
             return;
         }
         const username = args[1];
-        message.channel.startTyping();
+        message.channel.sendTyping();
 
         try {
             const serverResponse = await fetch(
@@ -43,7 +43,7 @@ module.exports = <TriggeredCommand>{
                 .addField('Followers', user.edge_followed_by.count, true)
                 .addField('Following', user.edge_follow.count, true)
                 .setURL(profileURL);
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         } catch (e) {
             if (e.toString().includes('Cannot read property')) {
                 throw (
@@ -58,8 +58,6 @@ module.exports = <TriggeredCommand>{
             } else {
                 throw e;
             }
-        } finally {
-            message.channel.stopTyping();
         }
     },
 };

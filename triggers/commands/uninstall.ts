@@ -21,7 +21,7 @@ module.exports = <Command>{
                             `There is no command with the name or alias \`${commandName}\``
                         );
 
-                    message.channel.send(fail);
+                    message.channel.send({ embeds: [fail] });
                     return;
                 }
 
@@ -34,7 +34,7 @@ module.exports = <Command>{
                         `Command \`${command.name}\` was uninstalled!`
                     );
 
-                message.channel.send(commandSuccess);
+                message.channel.send({ embeds: [commandSuccess] });
                 break;
 
             case 'trigger':
@@ -46,7 +46,7 @@ module.exports = <Command>{
                             `There is no trigger with the name or alias \`${commandName}\``
                         );
 
-                    message.channel.send(fail);
+                    message.channel.send({ embeds: [fail] });
                     return;
                 }
 
@@ -61,7 +61,7 @@ module.exports = <Command>{
                         `Trigger \`${commandName}\` was uninstalled!`
                     );
 
-                message.channel.send(triggerSuccess);
+                message.channel.send({ embeds: [triggerSuccess] });
                 break;
 
             // case 'edit':
@@ -94,7 +94,7 @@ module.exports = <Command>{
                             `There is no reaction command with the name \`${commandName}\``
                         );
 
-                    message.channel.send(fail);
+                    message.channel.send({ embeds: [fail] });
                     return;
                 }
 
@@ -109,7 +109,7 @@ module.exports = <Command>{
                         `Reaction command \`${commandName}\` was uninstalled!`
                     );
 
-                message.channel.send(reactionSuccess);
+                message.channel.send({ embeds: [reactionSuccess] });
                 break;
 
             default:

@@ -13,10 +13,9 @@ module.exports = <Command>{
 };
 
 export const updateBot = (message?: Message) => {
-    if (message) message.channel.startTyping();
+    if (message) message.channel.sendTyping();
     exec('git pull', async (error, stdout, stderr) => {
         console.log({ error, stdout, stderr });
-        message.channel.stopTyping();
         await message.channel.send(
             '```\n' + stdout + '\n``````\n' + stderr + '\n```'
         );

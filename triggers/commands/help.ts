@@ -34,7 +34,7 @@ module.exports = <Command>{
                             : 'Restricted'
                     }`
                 );
-            message.channel.send(embed);
+            message.channel.send({ embeds: [embed] });
         } else {
             const embedFields = new Array<EmbedFieldData>();
             commands.forEach((command) => {
@@ -63,7 +63,7 @@ module.exports = <Command>{
                 )
                 .addFields(embedFields);
 
-            message.channel.send(helpEmbed);
+            message.channel.send({ embeds: [helpEmbed] });
         }
     },
 };

@@ -16,13 +16,15 @@ module.exports = <Command>{
         await (<TextChannel>message.channel).bulkDelete(numberToDelete + 1);
 
         const myMessage = await message.reply({
-            embed: new MessageEmbed()
-                .setTitle(
-                    `${numberToDelete} Message${
-                        numberToDelete != 1 ? 's' : ''
-                    } Deleted`
-                )
-                .setColor('#4caf50'),
+            embeds: [
+                new MessageEmbed()
+                    .setTitle(
+                        `${numberToDelete} Message${
+                            numberToDelete != 1 ? 's' : ''
+                        } Deleted`
+                    )
+                    .setColor('#4caf50'),
+            ],
         });
 
         setTimeout(() => {

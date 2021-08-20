@@ -45,6 +45,6 @@ module.exports = <Command>{
             .setImage(response.img)
             .addFields(embedFields);
 
-        message.channel.send(embed);
+        message.channel.send({ embeds: [embed] });
     },
 };

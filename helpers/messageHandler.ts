@@ -45,13 +45,13 @@ const processCommands = async (message: Message) => {
                     .setColor('#ff9800')
                     .setTitle("😕 That's not a command!")
                     .setDescription(e);
-                await message.reply(error);
+                await message.reply({ embeds: [error] });
             } else {
                 const error = new MessageEmbed()
                     .setColor('#f44336')
                     .setTitle("🤬 That didn't work!")
                     .setDescription(e);
-                const errorMessage = await message.reply(error);
+                const errorMessage = await message.reply({ embeds: [error] });
                 `Something went wrong! Check https://discordapp.com/channels/${errorMessage.guild.id}/${errorMessage.channel.id}/${errorMessage.id}`;
             }
         }
@@ -90,12 +90,12 @@ const processTriggers = async (message: Message) => {
                     .setColor('#f44336')
                     .setTitle("🤬 That didn't work!")
                     .setDescription(e);
-                message.reply(error);
+                message.reply({ embeds: [error] });
             }
         });
     }
 };
 
 export function setupMessageListeners() {
-    client.on('message', onMessage);
+    client.on('messageCreate', onMessage);
 }

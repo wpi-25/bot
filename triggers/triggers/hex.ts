@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageMentions } from 'discord.js';
+import { HexColorString, MessageEmbed, MessageMentions } from 'discord.js';
 import { TriggeredCommand } from '../../Types';
 
 module.exports = <TriggeredCommand>{
@@ -20,10 +20,14 @@ module.exports = <TriggeredCommand>{
             return !includes; // False if it's there
         }),
     async execute(message, args: RegExpMatchArray) {
-        args.forEach((val) => {
-            message.channel.send(
-                new MessageEmbed().setTitle(val.toLowerCase()).setColor(val)
-            );
+        args.forEach((val: HexColorString) => {
+            message.channel.send({
+                embeds: [
+                    new MessageEmbed()
+                        .setTitle(val.toLowerCase())
+                        .setColor(val),
+                ],
+            });
         });
     },
 };
