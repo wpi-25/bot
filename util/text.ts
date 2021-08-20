@@ -27,8 +27,9 @@ export const getIDFromTag = (mention: string) => {
     return mention;
 };
 
-export function getRandomHexColor(): HexColorString {
-    return `#${rand([0, 0xffffff]).toString(16)}`;
+export function getRandomHexColor() {
+    const color = <HexColorString>`#${rand([0, 0xffffff]).toString(16)}`;
+    return color;
 }
 
 export function getChannelList(list: string | Array<Snowflake>) {
