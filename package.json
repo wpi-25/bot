@@ -29,7 +29,7 @@
     "devDependencies": {
         "@types/node": "^16.6.2",
         "@types/node-fetch": "^2.5.10",
-        "@types/redis": "^2.8.28",
+        "@types/redis": "^2.8.31",
         "@typescript-eslint/eslint-plugin": "^4.29.2",
         "@typescript-eslint/parser": "^4.23.0",
         "eslint": "^7.32.0",
