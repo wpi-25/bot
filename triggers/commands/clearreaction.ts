@@ -43,7 +43,7 @@ module.exports = <Command>{
             reaction.remove();
         });
 
-        const myMessage = await message.reply({
+        const myMessage = await message.channel.send({
             embeds: [
                 new MessageEmbed()
                     .setTitle(

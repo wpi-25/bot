@@ -41,18 +41,17 @@ const processCommands = async (message: Message) => {
         } catch (e) {
             console.warn(e);
             if (typeof e == 'string' && e.startsWith('Command')) {
-                const error = new MessageEmbed()
-                    .setColor('#ff9800')
-                    .setTitle("😕 That's not a command!")
-                    .setDescription(e);
-                await message.reply({ embeds: [error] });
+                await message.reply("😕 That's not a command!");
             } else {
                 const error = new MessageEmbed()
                     .setColor('#f44336')
-                    .setTitle("🤬 That didn't work!")
-                    .setDescription(e);
-                const errorMessage = await message.reply({ embeds: [error] });
-                `Something went wrong! Check https://discordapp.com/channels/${errorMessage.guild.id}/${errorMessage.channel.id}/${errorMessage.id}`;
+                    // @ts-ignore because the compiler was complaining about converting the `any` to a string
+                    .setDescription(`${e || '*no error content*'}`);
+                console.warn(`WARN: ${e}`);
+                await message.reply({
+                    content: "🤬 That didn't work!",
+                    embeds: [error],
+                });
             }
         }
     }
@@ -88,9 +87,13 @@ const processTriggers = async (message: Message) => {
             } catch (e) {
                 const error = new MessageEmbed()
                     .setColor('#f44336')
-                    .setTitle("🤬 That didn't work!")
-                    .setDescription(e);
-                message.reply({ embeds: [error] });
+                    // @ts-ignore because the compiler was complaining about converting the `any` to a string
+                    .setDescription(`${e}`);
+                console.warn(`WARN: ${e}`);
+                message.reply({
+                    content: "🤬 That didn't work!",
+                    embeds: [error],
+                });
             }
         });
     }

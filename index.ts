@@ -41,7 +41,9 @@ client.on('ready', () => {
     readyMembers();
     readyVC();
 
-    queueLevelUpdates();
+    if (config.levels?.db) {
+        queueLevelUpdates();
+    }
 });
 
 setupMessageListeners();

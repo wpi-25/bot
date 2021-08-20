@@ -15,7 +15,7 @@ module.exports = <Command>{
         const numberToDelete = parseInt(args[0]);
         await (<TextChannel>message.channel).bulkDelete(numberToDelete + 1);
 
-        const myMessage = await message.reply({
+        const myMessage = await message.channel.send({
             embeds: [
                 new MessageEmbed()
                     .setTitle(
